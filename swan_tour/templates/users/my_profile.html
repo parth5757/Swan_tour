@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<!-- Mirrored from andit.co/projects/html/and-tour/demo/my-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 10:53:07 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title -->
+    <title>My Profile - Swan Tour </title>
+    {% include 'css.html' %}
+</head>
+
+<body>
+    <!-- preloader Area -->
+    {% include 'loader.html' %}
+
+    <!-- Header Area -->
+    {% include 'header.html' %}
+
+
+    <!-- Common Banner Area -->
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>My Profile</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span><a href="dashboard.html">Customer
+                                    dashboard</a></li>
+                            <li><span><i class="fas fa-circle"></i></span>My Profile</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Area -->
+    <section id="dashboard_main_arae" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="dashboard_sidebar">
+                        <div class="dashboard_sidebar_user">
+                            <img src="{% static 'assets/img/common/dashboard-user.png' %}" alt="img">
+                            <h3>{{user.username}}</h3>
+                            <p><a href="tel:+00-123-456-789"></a></p>
+                            <p><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+                        </div>
+                        <div class="dashboard_menu_area">
+                            <ul>
+                                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                                <li class="dashboard_dropdown_button" id="dashboard_dropdowns"><i
+                                        class="fas fa-address-card"></i>My bookings
+                                    <span> <i class="fas fa-angle-down"></i></span>
+                                    <div class="booing_sidebar_dashboard" id="show_dropdown_item"
+                                        style="display: none;">
+                                        <ul>
+                                            <li><a href="hotel-booking.html"><i class="fas fa-hotel"></i>Hotel
+                                                    booking</a></li>
+                                            <li><a href="flight-booking.html"><i class="fas fa-paper-plane"></i>Flight
+                                                    booking</a></li>
+                                            <li>
+                                                <a href="tour-booking.html">
+                                                    <i class="fas fa-map"></i>Tour booking
+                                                </a>
+                                            </li>
+                                            <li><a href="booking-history.html"><i class="fas fa-history"></i>Booking
+                                                    history</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li><a href="my-profile.html" class="active"><i class="fas fa-user-circle"></i>My
+                                        profile</a></li>
+                                <li><a href="dashboard.html"><i class="fas fa-wallet"></i>Wallet</a></li>
+                                <li><a href="notification.html"><i class="fas fa-bell"></i>Notifications</a></li>
+                                <li><a href="#!" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                            class="fas fa-sign-out-alt"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="dashboard_common_table">
+                        <h3>My Profile</h3>
+                        <div class="profile_update_form">
+                            <form action="https://andit.co/projects/html/and-tour/demo/!#" id="profile_form_area">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="f-name">First name</label>
+                                            <input type="text" class="form-control" id="f-name" placeholder="Your Name"
+                                                value="{{user.username}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="l-name">Last name</label>
+                                            <input type="text" class="form-control" id="l-name" value="{{user.last_name}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="mail-address">Email address</label>
+                                            <input type="text" class="form-control" id="mail-address" value="{{user.email}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="mobil-number">Mobile number</label>
+                                            <input type="text" class="form-control" id="mobil-number"
+                                                value="+00 123 456 789">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="u-name">User name</label>
+                                            <input type="text" class="form-control" id="u-name" value="{{user.username}}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group change_password_field">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password" value="xxxxxxx" readonly>
+                                            <p>Change password</p>
+                                        </div>
+                                    </div>
+                                    <div class="change_password_input_boxed">
+                                        <h3>Change password</h3>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Old Password" >
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <input type="password" class="form-control"
+                                                        placeholder="New Password">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    {% include "footer.html" %}
+
+    <div class="go-top">
+        <i class="fas fa-chevron-up"></i>
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body logout_modal_content">
+                    <div class="btn_modal_closed">
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                    <h3>
+                        Are you sure? <br>
+                        you want to log out.
+                    </h3>
+                    <div class="logout_approve_button">
+                        <a href="{% url 'logout' %}" data-bs-dismiss="modal" class="btn btn_theme btn_md">Yes Confirm</a> 
+                        <button data-bs-dismiss="modal" class="btn btn_border btn_md">No Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'assets/js/bootstrap.bundle.js' %}"></script>
+    <!-- Meanu js -->
+    <script src="{% static 'assets/js/jquery.meanmenu.js' %}"></script>
+    <!-- owl carousel js -->
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <!-- wow.js -->
+    <script src="{% static 'assets/js/wow.min.js' %}"></script>
+    <!-- Custom js -->
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/add-form.js' %}"></script>
+</body>
+
+
+<!-- Mirrored from andit.co/projects/html/and-tour/demo/my-profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 10:53:07 GMT -->
+</html>

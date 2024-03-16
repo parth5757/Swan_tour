@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title -->
+    <title>Login - Swan Tour </title>
+    <!-- Bootstrap css -->
+    {% include "css.html" %}
+</head>
+<body>
+    {% include "loader.html" %}
+    <!-- Header Area -->
+    {% include "header.html" %}
+    <!-- search -->
+    <div class="search-overlay">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-close">
+                    <span class="search-overlay-close-line"></span>
+                    <span class="search-overlay-close-line"></span>
+                </div>
+                <div class="search-overlay-form">
+                    <form>
+                        <input type="text" class="input-search" placeholder="Search here...">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Common Banner Area -->
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>Login</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span> Login</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  Common Author Area -->
+    <section id="common_author_area" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="common_author_boxed">
+                        <div class="common_author_heading">
+                            <h3>Login your account</h3>
+                            <h2>Logged in to stay in touch</h2>
+                        </div>
+                        <div class="common_author_form">
+                            <form action="{% url "login" %}" method="post" id="main_author_form">
+                                {% csrf_token %}
+
+                                {% for message in messages %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{message}} <button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                {% endfor %}
+                                <div class="form-group">
+                                    <input type="text" name="username" class="form-control" placeholder="Enter user name" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" class="form-control" placeholder="Enter password" />
+                                    <a href="{% url "password-reset" %}">Forgot password?</a>
+                                </div>
+                                <div class="common_form_submit">
+                                    <button class="btn btn_theme btn_md">Log in</button>
+                                </div>
+                                <div class="have_acount_area">
+                                    <p>Dont have an account? <a href="{% url "register" %}">Register now</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    {% include "footer.html" %}
+    {% include "js.html" %}
+</body>
+</html>

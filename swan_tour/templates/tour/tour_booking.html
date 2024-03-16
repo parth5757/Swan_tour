@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <title>Tour Booking Submission - Andtourtravel </title>
+    {% include 'css.html' %}
+</head>
+
+<body>
+    <!-- preloader Area -->
+    {% include 'loader.html' %}
+
+    <!-- Header Area -->
+
+    {% include 'header.html' %}
+
+    <!-- Common Banner Area -->
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>Booking submission</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span><a href="tour-search.html">Tours</a></li>
+                            <li><span><i class="fas fa-circle"></i></span><a href="tour-details.html">{{ tour.name }}</a>
+                            </li>
+                            <li><span><i class="fas fa-circle"></i></span> Booking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tour Booking Submission Areas -->
+    <section id="tour_booking_submission" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="tou_booking_form_Wrapper">
+                    <form action="{% url 'tour_booking' %}" method="post" id="tour_bookking_form_item">
+                        {% csrf_token %}
+                        <div class="booking_tour_form">
+                            <h3 class="heading_theme">Booking submission</h3>
+                            <h2>{{tour.name}}</h2>
+                            <div class="tour_booking_form_box">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="dates">Tour Start From</label>
+                                            <input type="date" id="dates" value="{{ tour.start_date|date:'Y-m-d' }}" class="form-control" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label for="dates">Tour End Date</label>
+                                            <input type="date" id="dates" value="{{ tour.end_date|date:'Y-m-d' }}" class="form-control" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="email" class="form-control bg_input" name="email" placeholder="Email address " required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control bg_input" name="phone_number" placeholder="Mobile number*" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control bg_input" name="first_name" placeholder="First name*" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control bg_input" name="last_name" placeholder="Last name*" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12" id="adults-container">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking_tour_form">
+                            <h2><span>Total Amount of  </span ><span class="count2">{{no_of_people_booking}}  </span>person : <span class="final_amount1">₹{{tour.total_price}}</span></h2>
+                            <h3 class="heading_theme">Payment method</h3>
+                            <div class="tour_booking_form_box">
+                                <div class="booking_payment_boxed">
+                                        
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                id="flexRadioDefault4" value="True" checked disabled>
+                                            <label class="form-check-label" for="flexRadioDefault4">
+                                                Cash on delivery
+                                            </label>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden_field_all">
+                            <input type="hidden" name="tour" value="{{ tour.id}}">
+                            <input type="hidden" name="user" value="{{ user.id }}">
+                            <input type="hidden" id="hidden_no_of_people" name="no_of_people_booking" value="{{ no_of_people_booking}}">
+                            <input type="hidden" name="total_price" id="hidden_total_price" value="">
+                        </div>
+                        <div class="booking_tour_form_submit">
+                            <div class="form-check write_spical_check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf1" disabled checked >
+                                <label class="form-check-label" for="flexCheckDefaultf1">
+                                    <span class="main_spical_check">
+                                        <span>I read and accept all <a href="#">Terms and
+                                                conditios</a></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <button class="btn btn_theme btn_md" value="submit">submit</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="tour_details_right_sidebar_wrapper">
+                        <div class="tour_detail_right_sidebar">
+                            <div class="tour_details_right_boxed">
+                                <div class="tour_details_right_box_heading">
+                                    <h3>{{ tour.name }}</h3>
+                                    <p></p>
+                                </div>
+                                <div class="valid_date_area">
+                                    <div class="valid_date_area_one">
+                                        <h5>Valid from</h5>
+                                        <p>{{ tour.start_date }}</p>
+                                    </div>
+                                    <div class="valid_date_area_one">
+                                        <h5>Valid till</h5>
+                                        <p>{{ tour.end_date }}</p>
+                                    </div>
+                                </div>
+                                <div class="tour_package_details_bar_list">
+                                    <h5>Package details</h5>
+                                    <p>{{ tour.overview }}</p>
+                                </div>
+                                <div class="tour_package_details_bar_price">
+                                    <h5>Price</h5>
+                                    <div class="tour_package_bar_price">
+                                        <h3>₹ {{ tour.total_price }} <sub>/Per serson</sub> </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tour_detail_right_sidebar">
+                            <div class="tour_details_right_boxed">
+                                <div class="tour_details_right_box_heading">
+                                    <h3>Travel date</h3>
+                                </div>
+                                {{ tour.start_date}}
+                                <div class="edit_date_form">
+                                    <div class="form-group">
+                                        <label for="dates">Tour Start Date</label>
+                                        <input type="date" id="dates" value="{{ tour.start_date|date:'Y-m-d' }}" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="tour_package_details_bar_list">
+                                    <h5>Tourist</h5>
+                                    <div class="select_person_item">
+                                        <div class="select_person_left">
+                                            <h6>Adult</h6>
+                                            <div class="select_person_right">
+                                                <div class="button-set">
+                                                    <button type="button" class="increment">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                    <!-- add hidden label which have totalgrop size of tour-->
+                                                    <span class="count">{{ no_of_people_booking }}</span>
+                                                    <button type="button" class="decrement">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="select_person_right">
+                                            <span class="count1">{{ no_of_people_booking }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="edit_person">
+                                </div>
+                            </div>
+                        </div>
+  
+                        <div class="tour_detail_right_sidebar">
+                            <div class="tour_details_right_boxed">
+                                <div class="tour_details_right_box_heading">
+                                    <h3>Booking amount</h3>
+                                </div>
+
+                                <div class="tour_booking_amount_area">
+                                    <div class="total_subtotal_booking">
+                                        <h6>Total Amount <span class="final_amount">{{tour.total_price}}</span> </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer  -->
+    {% include 'footer.html' %}
+
+    
+    {% include 'js.html' %}
+
+    <script>
+
+        // Function to convert date from "Month dd, yyyy" format to "mm/dd/yyyy" format
+        document.addEventListener('DOMContentLoaded', function() {
+            const decrementButton = document.querySelector('.decrement');
+            const incrementButton = document.querySelector('.increment');
+            const countElement = document.querySelector('.count');
+            const count1Element = document.querySelector('.count1');
+            const count2Element = document.querySelector('.count2');
+            const adultsContainer = document.getElementById('adults-container');
+            const start_date = document.getElementById('start_date');
+            const end_date = document.getElementById('end_date');
+            const amountElement = document.querySelector('.final_amount');
+            const amount1Element = document.querySelector('.final_amount1');
+            const hidden_no_of_peopleElement = document.getElementById('hidden_no_of_people');
+            const hidden_total_priceElement = document.getElementById('hidden_total_price');
+    
+            let count =  {{no_of_people_booking}}; // Initialize count to  1 as per your requirement
+
+            decrementButton.addEventListener('click', () => {
+                if (count >  1) { // Ensure the count does not go below  1
+                    count--;
+                    updateCount();
+                    removeInputFields();
+                }
+            });
+    
+            incrementButton.addEventListener('click', () => {
+                if (count < {{ tour.get_available_group_size }}) {
+                    count++;
+                    updateCount();
+                    addInputFields();
+                }
+            });
+    
+            function addInputFields() {
+                const inputGroup = document.createElement('div');
+                inputGroup.innerHTML = `
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        {{ form }}
+                    {% endfor %}
+                `;
+                adultsContainer.appendChild(inputGroup);
+            }
+    
+            function removeInputFields() {
+                if (adultsContainer.children.length >  0) {
+                    adultsContainer.removeChild(adultsContainer.lastChild);
+                }
+            }
+    
+            function updateCount() {
+                countElement.textContent = count;
+                count1Element.textContent = count;
+                count2Element.textContent = count;
+                hidden_no_of_peopleElement.value = count;
+                let final_amount = count * {{ tour.total_price }};
+                final_amount.textContent = final_amount;
+                amountElement.textContent = final_amount;
+                amount1Element.textContent = final_amount
+                hidden_total_priceElement.value = final_amount;
+            }
+
+            function update_hidden_fields() {
+                final_amount = {{no_of_people_booking}} * {{ tour.total_price }};
+                hidden_total_priceElement.value = final_amount;
+            }
+
+
+            // this work fine
+            function update(){
+                let final_amount = {{no_of_people_booking}} * {{ tour.total_price }};
+                final_amount.textContent = final_amount;
+                amountElement.textContent = final_amount;
+            }
+            
+            function update_input_field(){
+                for (let i = 0; i <= {{no_of_people_booking}}-2; i++) {
+                    addInputFields();
+                }
+            }
+
+
+            function on_load(){
+                update_input_field();
+                update();
+                update_hidden_fields();
+            }
+
+            window.onload = on_load();
+        });
+    </script>
+</body> 
+</html>

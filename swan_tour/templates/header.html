@@ -1,0 +1,139 @@
+{% load static %}
+<!-- Header Area -->
+<header class="main_header_arae">
+    <!-- Navbar Bar -->
+    <div class="navbar-area">
+        <div class="main-responsive-nav">
+            <div class="container">
+                <div class="main-responsive-menu">
+                    <div class="logo">
+                        <a href="{% static index.html %}">
+                            <img src="{% static 'assets/img/logo.png' %}" alt="logo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-navbar">
+            <div class="container">
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <a class="navbar-brand "    href="{% url "home" %}">
+                        <img src="{% static 'assets/img/logo.png' %}" alt="logo">
+                    </a>
+                    <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="{% url "home" %}" class="nav-link ">
+                                    Home
+                                </a>
+                            </li>
+<!--                            <li class="nav-item">
+                                <a href="{% url "hotel_list" %}" class="nav-link">
+                                    Hotel
+                                </a>
+                            </li>-->
+                            <li class="nav-item">
+                                <a href="{% url "tour_user_list" %}" class="nav-link">Tours
+                                </a>
+                            </li>
+<!--                            <li class="nav-item">
+                                <a href="#" class="nav-link">Bus 
+                                </a>
+                            </li>-->
+                            <li class="nav-item">
+                                <a href="{% url "about" %}" class="nav-link">
+                                    About
+                                    {% comment %} <i class="fas fa-angle-down"></i> {% endcomment %}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url "contact" %}" class="nav-link">Contact 
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="others-options d-flex align-items-center ">
+                            <div class="option-item">
+                                <a href="#" class="search-box">
+                                    <i class="bi bi-search"></i>
+                                </a>
+                            </div>
+                            {% if user.is_authenticated %}
+                                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                                    {% csrf_token %}
+                                </form>
+                                <div class="option-item">
+                                    <a href="{% url 'tour_user_list' %}" class="btn btn_navber">Book Tour</a>
+                                </div>
+                                <div class="user_detail">
+                                    <a href="{% url 'profile' %}"><!--onclick="document.getElementById('logout-form').submit();"-->
+                                        <img style="height: 40px; width: 40px;" src="{% static 'assets/img/banner/user.png' %}" alt="user">
+                                        {% comment %} <i class="fas fa-angle-down"></i>
+                                        <li class="nav-item">
+                                            <ul class="dropdown-menu">
+                                                <li class="nav-item">
+                                                    <a href="index.html" class="nav-link">Home One</a>
+                                                </li>
+                                            </ul>
+                                        </li> {% endcomment %}
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="option-item">
+                                    <a href="{% url 'login' %}" class="btn  btn_navber">login</a>
+                                </div>
+                                <div class="option-item">
+
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="user">
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="others-option-for-responsive">
+            <div class="container">
+                <div class="dot-menu">
+                    <div class="inner">
+                        <div class="circle circle-one"></div>
+                        <div class="circle circle-two"></div>
+                        <div class="circle circle-three"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="option-inner">
+                        <div class="others-options d-flex align-items-center">
+                            <div class="option-item">
+                                <a href="#" class="search-box"><i class="fas fa-search"><img src="{% static 'assets/img/icon/' %}" alt=""></i></a>
+                            </div>
+                            <div class="option-item">
+                                <a href="contact.html" class="btn  btn_navber">Get free quote</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="search-overlay">
+    <div class="d-table">
+        <div class="d-table-cell">
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-layer"></div>
+            <div class="search-overlay-close">
+                <span class="search-overlay-close-line"></span>
+                <span class="search-overlay-close-line"></span>
+            </div>
+            <div class="search-overlay-form">
+                <form>
+                    <input type="text" class="input-search" placeholder="Search here...">
+                    <button type="button"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

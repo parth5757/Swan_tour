@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    {% include "css.html" %}
+    <style>
+        .tour-image{
+            height: 450px;
+            width:222px;
+            object-fit: cover;
+        }
+    </style>
+    <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css"/>
+</head>
+<body>
+    {% include "header.html" %}
+    <!-- Common Banner Area -->
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>Top destinations</h2>
+                        <ul>
+                            <li><a href="{% url 'home' %}">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span> Top destinations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Area -->
+    <section id="theme_search_form_tour">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="theme_search_form_area">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div id="autocomplete" class="autocomplete flight_Search_boxed">
+                                    <p>Destination</p>
+                                    <input type="text" id="search-destination" class="autocomplete-input" placeholder="Where are you going?" value="{{ search_destination }}"
+                                    aria-label="Search for a destination">
+                                    <ul class="autocomplete-result-list"></ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="form_search_date">
+                                    <div class="flight_Search_boxed date_flex_area">
+                                        <div class="Journey_date">
+                                            <p>Journey date</p>
+                                            <input type="date" id="search-start-date" value="{{ search_start_date }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2  col-md-6 col-sm-12 col-12">
+                                <div class="top_form_search_button">
+                                    <button class="btn btn_theme btn_md" id="apply-filters">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinations Areas -->
+    <section id="top_testinations" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>{{ tour_count }} destinations found</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="left_side_search_area">
+                        <!-- Filter by Tour Name -->
+                        <div class="left_side_search_boxed">
+                            <div class="left_side_search_heading">
+                                <h5>Search by name</h5>
+                            </div>
+                            <div class="name_search_form">
+                                <input type="text" class="form-control" id="search-name" placeholder="Enter tour name" value="">
+                                <button class="apply-search apply" type="button">Apply</button>   
+                            </div>
+                        </div>
+                        <!-- Filter by Price Slider -->
+                        {% comment %} <div class="left_side_search_boxed">
+                            <div class="left_side_search_heading">
+                                <h5>Filter by price</h5>
+                            </div>
+                            <div class="filter-price">
+                                <div id="price-slider"></div>
+                            </div>
+                            <button class="apply" type="button">Apply</button>
+                        </div> {% endcomment %}
+                        <!-- Filter by Rating -->
+                        <div class="left_side_search_boxed">
+                            <div class="left_side_search_heading">
+                                <h5>Filter by Review</h5>
+                            </div>
+                            <div class="filter_review">
+                                <form class="review_star">
+                                    <div class="form-check">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="5" id="five-star">
+                                        <label class="form-check-label" for="five-star">
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="4" id="five-star">
+                                        <label class="form-check-label" for="four-star">
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="3" id="five-star">
+                                        <label class="form-check-label" for="three-star">
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="2" id="five-star">
+                                        <label class="form-check-label" for="two-star">
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="1" id="five-star">
+                                        <label class="form-check-label" for="one-star">
+                                            <i class="fas fa-star color_theme"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                            <i class="fas fa-star color_asse"></i>
+                                        </label>
+                                    </div>
+                                </form>
+                                <button class="apply-review apply" type="button">Apply</button>
+                            </div>
+                        </div>
+                        <!-- Filter by Tour type -->
+                        <div class="left_side_search_boxed">
+                            <div class="left_side_search_heading">
+                                <h5>Tour type</h5>
+                            </div>
+                            <div class="tour_search_type">
+                                {% for tour_type in tour_types %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="{{tour_type.id}}" id="tourType{{tour_type.id}}">
+                                        <label class="form-check-label " for="tourType{{tour_type.id}}">
+                                            <span class="area_flex_one">
+                                                <span>{{ tour_type.name }}</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button class="apply-tour_type apply" type="button">Apply</button>
+                        </div>  
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        {% for tour in tour1 %}
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                            <div class="top_destinations_box img_hover">
+                                <!-- <div class="heart_destinations">
+                                    <i class="fas fa-heart"></i>
+                                </div> -->
+                                <a href="{% url 'tour_detail' slug=tour.tour_slug %}"><img class="tour-image" src="{{ tour.tour_image.url }}"
+                                        alt="img"></a>
+                                <div class="top_destinations_box_content">
+                                    <h4><a href="{% url 'tour_detail' slug=tour.tour_slug %}">{{ tour.name }}</a></h4>
+                                    <p><span class="review_rating">{{ tour.rating }}/5 star</span> 
+                                        <span class="review_count">{{ tour.tour_type }}</span></p>
+                                    <h3>₹{{ tour.total_price }}<span>Price starts from</span></h3>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <!-- Pagination -->
+                        <div class="col-lg-12">
+                            <div class="pagination_area">
+                                <ul class="pagination">
+                                    {% if tour1.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=1{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}{% if destination %}&destination={{ destination }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}" aria-label="First">
+                                                 <span aria-hidden="true">&laquo;&laquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ tour1.previous_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}{% if destination %}&destination={{ destination }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% for page_num in tour1.paginator.page_range %}
+                                        {% if tour1.number == page_num %}
+                                            <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ page_num }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}">{{ page_num }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if tour1.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ tour1.next_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ tour1.paginator.num_pages }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Last">
+                                                <span aria-hidden="true">&raquo;&raquo;</span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer  -->
+    {% include "footer.html" %}
+
+    <script src="{% static 'assets/js/autocomplete.js' %}"></script> 
+
+    <script src="{% static 'assets/js/tour_js.js' %}"></script>
+
+
+    <!-- Custom js -->
+    <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static 'assets/js/bootstrap.bundle.js' %}"></script>
+    <!-- Meanu js -->
+    <script src="{% static 'assets/js/jquery.meanmenu.js' %}"></script>
+    <!-- Range js -->
+    <script src="{% static 'assets/js/nouislider.min.js' %}"></script>
+    <script src="{% static 'assets/js/wNumb.js' %}"></script>
+    <!-- owl carousel js -->
+    <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+    <!-- wow.js -->
+    <script src="{% static 'assets/js/wow.min.js' %}"></script>
+    <!-- Custom js -->
+    
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="{% static 'assets/js/add-form.js' %}"></script>
+    <script src="{% static 'assets/js/form-dropdown.js' %}"></script>
+
+
+</body>
+</html>

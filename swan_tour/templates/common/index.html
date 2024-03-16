@@ -1,0 +1,538 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<!-- Mirrored from andit.co/projects/html/and-tour/demo/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 10:46:12 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title -->
+    <title>Home - Swan Tour </title>
+    <!-- Bootstrap css -->
+    <!--css file is been included here-->
+    <style>
+        #tour-card {
+            width: 450px;
+            height: 650px;
+        }
+    </style>    
+    {% include "css.html" %}
+</head>
+
+<body>
+    <!-- preloader Area -->
+    {% include "loader.html" %}
+
+    <!-- Header Area -->
+    {% include "header.html" %}
+
+    <!-- search -->
+    <div class="search-overlay">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-layer"></div>
+                <div class="search-overlay-close">
+                    <span class="search-overlay-close-line"></span>
+                    <span class="search-overlay-close-line"></span>
+                </div>
+                <div class="search-overlay-form">
+                    <form>
+                        <input type="text" class="input-search" placeholder="Search here...">
+                        <button type="button"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner Area -->
+    <section id="home_three_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="banner_area_three">
+                        {% if user.is_authenticated %}
+                            <h3 class="top_banner_three_text">Welcome {{ user.username }} </h3>
+                        {% else %}
+                            <h3 class="top_banner_three_text">Welcome To Swan Tour </h3>
+                        {% endif %}
+                        <h2>Experience the world together</h2>
+                        <h3 class="bottom_banner_three_text">Find awesome Bus, hotel, tour, car and packages</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About area -->
+    <section id="three_about_area" class="section_padding_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="three_about_left">
+                        {% comment %} {% for  in  %}{% endfor %} {% endcomment %}
+                        <img src="
+                        {% static 'assets/img/common/about-three.png' %}"
+                        alt="img">
+                        <a class="video_btn" href="https://www.youtube.com/watch?v=_2LLXnUdUIc"
+                            title="Youtube Video"><img src="{% static 'assets/img/icon/play.png' %}" alt="icon"></a>
+                        <img src="{% static 'assets/img/common/verified.png' %}" class="verified_area" alt="img">
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div class="three_about_right">
+                        <h4 class="three_heading_area">Trusted partner</h4>
+                        <h2>With our experience we will serve you the best</h2>
+                        <p>
+                            Sint est eu sit ipsum enim amet esse sunt incididunt.
+                            Occaecat aliquip commodo ipsum officia in Lorem commodo aliquip dolore.
+                            Nisi domip excepteur commodo ea nostrud mollit.
+                        </p>
+                        <p>
+                            Sint est eu sit ipsum enim amet esse sunt incididunt.
+                            Occaecat aliquip commodo ipsum officia in commodo dolore.
+                        </p>
+                        <p>
+                            Aliqua aute aliqua reprehenderit sunt minim ullamco duis.
+                            Lorem pariatur cillum labore reprehenderit ex velit ex enim deserunt ea proiden
+                            t et dolore do. In pariatur ea sint elit magna.
+                        </p>
+                        <div class="about_three_flex">
+                            <div class="about_counter_item">
+                                {% comment %} add total number of hotels {% endcomment %}
+                                <h2>{{ hotel_len }}+</h2>
+                                <p>Hotel Network</p>
+                            </div>
+                            <div class="about_counter_item">
+                                {% comment %} add total number of place here {% endcomment %}
+                                <h2>{{ place_len }}+</h2>
+                                <p>Destinations</p>
+                            </div>
+                            <div class="about_counter_item"> <!--if you want add bus here-->
+                                <h2>100%</h2>
+                                <p>Happiness</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Choose your destinations Area-->
+    <section id="choose_destinations_area" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Choose your destinations</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                {% for tour in tours %}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12" >
+                    <div class="choose_desti_wrapper">
+                        <div class="choose_des_inner_wrap">
+                            <div class="choose_boxed_inner">
+                                <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
+                                <div class="choose_img_text">
+                                    <h2>{{tour.name}} | ₹{{tour.total_price}}</h2>
+                                    <h3>start from{{tour.start_date}} & end at{{tour.end_date}}</h3>
+                                </div>
+                            </div>
+                            <div class="flep_choose_box">
+                                <div class="flep_choose_box_inner">
+                                    <div class="rating_outof">
+                                        <h5>{{tour.rating}} Out of 5</h5>
+                                    </div>
+
+                                    <h2> | ₹{{tour.total_price}}</h2>
+                                    <h3>start from{{tour.start_date}} & end at{{tour.end_date}}</h3>
+                                    <p>{{tour.overview}}</p>
+                                </a>
+                                    <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- What we offer Area-->
+    <section id="three_We_area" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="we_offer_area_three">
+                        <h4 class="three_heading_area">What we offer</h4>
+                        <h2>Discover your all the destinations with us!</h2>
+                        <p>
+                            Sint est eu sit ipsum enim amet esse sunt incididunt.
+                            Occaecat aliquip commodo ipsum officia in mollit.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="three_offer_slider owl-theme owl-carousel">
+                        {% for tour in all_tour %}
+                        <div class="three_offer_item">
+                            <img src="{{ tour.image.url }}" alt="{{tour.name}}">
+                            <h3>{{tour.name}}</h3>
+                            {% comment %} <p>Dolore ullamco voluptate duis est volupt
+                                exercitation officia ad qui nostrud adipisicing non.</p> {% endcomment %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Promotional Tours Area -->
+    <section id="promotional_tours" class="section_padding_top">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Trending tour</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Trending_tour_slider owl-theme owl-carousel arrow_style">
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel1.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>New beach, Thailand</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Kantua hotel, Thailand</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel2.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Indonesia</p>
+                                <div class="discount_tab">
+                                    <span>50%</span>
+                                </div>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel paradise international</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel3.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Kualalampur</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel kualalampur</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel4.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Mariana island</p>
+                                <div class="discount_tab">
+                                    <span>50%</span>
+                                </div>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel deluxe</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel6.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Beach view</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Thailand grand suit</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel7.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Long island</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                h4><a href="{% static hotel_details.html %}">Zefi resort and spa</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="promotional_tourss" class="section_padding">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Popular hotels</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="Popular_hotels_slider owl-theme owl-carousel arrow_style">
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel1.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>New beach, Thailand</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Kantua hotel, Thailand</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel2.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Indonesia</p>
+                                <div class="discount_tab">
+                                    <span>50%</span>
+                                </div>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel paradise international</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}""><img src="{% static 'assets/img/tab-img/hotel3.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Kualalampur</p> 
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel kualalampur</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel4.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Mariana island</p>
+                                <div class="discount_tab">
+                                    <span>50%</span>
+                                </div>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Hotel deluxe</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel6.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Beach view</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %">Thailand grand suit</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                        <div class="theme_common_box_two img_hover">
+                            <div class="theme_two_box_img">
+                                <a href="{% static hotel_details.html %}"><img src="{% static 'assets/img/tab-img/hotel7.png' %}" alt="img"></a>
+                                <p><i class="fas fa-map-marker-alt"></i>Long island</p>
+                            </div>
+                            <div class="theme_two_box_content">
+                                <h4><a href="{% static hotel_details.html %}">Zefi resort and spa</a></h4>
+                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                        reviewes)</span></p>
+                                <h3>$99.00 <span>Price starts from</span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- width_offer Area -->
+    <section id="width_offer_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="width_offer_item">
+                        <div class="width_offer_icon">
+                            <img src="{% static 'assets/img/icon/plan.png' %}" alt="icon">
+                        </div>
+                        <div class="width_offer_text">
+                            {% comment %} add places here total {% endcomment %}
+                            <h3>{{ place_len }}+ destinations</h3>
+                            <p>Nostrud aliqua ipsum dolore velit labore nulla
+                                fugiat nulla irure nostrud.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="width_offer_item">
+                        <div class="width_offer_icon">
+                            <img src="{% static 'assets/img/icon/location.png' %}" alt="icon">
+                        </div>
+                        <div class="width_offer_text">
+                            <h3>Best price guarantee</h3>
+                            <p>Nostrud aliqua ipsum dolore velit labore nulla
+                                fugiat nulla irure nostrud.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="width_offer_item">
+                        <div class="width_offer_icon">
+                            <img src="{% static 'assets/img/icon/suport.png' %}" alt="icon">
+                        </div>
+                        <div class="width_offer_text">
+                            <h3>Top quality customer support</h3>
+                            <p>Nostrud aliqua ipsum dolore velit labore nulla
+                                fugiat nulla irure nostrud.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients review Area -->
+    <section id="home_Three_client" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="home_client_wrpper">
+                        <h4>Our testimonials</h4>
+                        <h2>What our client say about us</h2>
+                        <div class="home-two-quote">
+                            <img src="{% static 'assets/img/icon/quote.png' %}" alt="img">
+                            <h3>Awesome service</h3>
+                        </div>
+                        <div class="home_two_client_slider  owl-theme owl-carousel">
+                            <div class="client_two_content">
+                                <p>
+                                    Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem eiusmod
+                                    excepteur anim adipisicing officia officia.
+                                </p>
+                                <div class="client_two_author">
+                                    <h5>Cameron douglas</h5>
+                                    <h6>Businessman</h6>
+                                </div>
+                            </div>
+                            <div class="client_two_content">
+                                <p>
+                                    Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem eiusmod
+                                    excepteur anim adipisicing officia officia.
+                                </p>
+                                <div class="client_two_author">
+                                    <h5>Cameron douglas</h5>
+                                    <h6>Businessman</h6>
+                                </div>
+                            </div>
+                            <div class="client_two_content">
+                                <p>
+                                    Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem eiusmod
+                                    excepteur anim adipisicing officia officia.
+                                </p>
+                                <div class="client_two_author">
+                                    <h5>Cameron douglas</h5>
+                                    <h6>Businessman</h6>
+                                </div>
+                            </div>
+                            <div class="client_two_content">
+                                <p>
+                                    Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem eiusmod
+                                    excepteur anim adipisicing officia officia.
+                                </p>
+                                <div class="client_two_author">
+                                    <h5>Cameron douglas</h5>
+                                    <h6>Businessman</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="home_three_client_right">
+                        <img src="{% static 'assets/img/icon/test.png' %}" alt="img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Our partners Area -->
+     <section id="our_partners" class="section_padding_bottom">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Our partners</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="partner_slider_area owl-theme owl-carousel">
+                        {% for hotel in total_hotel  %}
+                            <div class="partner_logo">
+                                <a href="#!"> <img src="{{ hotel.hotel_image.url }}" alt="{{hotel.name}}"></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer  -->
+    {% include "footer.html" %}
+
+    {% include "js.html" %}
+</body>
+
+
+<!-- Mirrored from andit.co/projects/html/and-tour/demo/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 10:46:23 GMT -->
+</html>

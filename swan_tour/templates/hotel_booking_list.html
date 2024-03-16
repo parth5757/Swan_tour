@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title%}Swan Tour hotels{% endblock %}
+{%  block dashboard %}
+<div class="dashboard__main">
+  <div class="dashboard__content">
+    <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
+
+      <div class="col-auto">
+
+        <h1 class="text-30 lh-14 fw-600">All Hotels Bookings</h1>
+
+
+      </div>
+
+      <div class="col-auto">
+
+      </div>
+    </div>
+    <div class="py-30 px-30 rounded-4 bg-white custom_shadow">
+      <div class="tabs -underline-2 js-tabs">
+        <div class="tabs__controls row x-gap-40 y-gap-10 lg:x-gap-20 js-tabs-controls">
+          <div class="col-auto">
+            <button class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1">All hotels</button>
+          </div>
+        </div>
+        <div class="tabs__content pt-30 js-tabs-content">
+            <div class="overflow-scroll scroll-bar-1">
+              <table class="table-4 -border-bottom col-12">
+                <thead class="bg-light-2">
+                  <tr>
+                    <th>id</th>
+                    <th>User</th>
+                    <th>Hotel</th>
+                    <th>First name</th>
+                    <th>Last name:</th>
+                    <th>Valid date from</th>
+                    <th>Valid date till</th>
+                    <th>No room booking</th>
+                    <th>Total Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for hotels in hotel_booking %}
+                  <tr>
+                    <td>{{hotels.id}}</td>
+                    <td>{{hotels.user}}</td>
+                    <td>{{hotels.hotel}}</td>
+                    <td>{{hotels.first_name}}</td>
+                    <td>{{hotels.last_name}}</td>
+                    <td>{{hotels.valid_date_from}}</td>
+                    <td>{{hotels.valid_date_till}}</td>
+                    <td>{{hotels.no_room_booking}}</td>
+                    <td>{{hotels.total_price}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- <div class="pt-30">
+        <div class="row justify-between">
+          <div class="col-auto">
+            <button class="button -blue-1 size-40 rounded-full border-light">
+              <i class="icon-chevron-left text-12"></i>
+            </button>
+          </div>
+
+          <div class="col-auto">
+            <div class="row x-gap-20 y-gap-20 items-center">
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full">1</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full bg-dark-1 text-white">2</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full">3</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full bg-light-2">4</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full">5</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full">...</div>
+
+              </div>
+
+              <div class="col-auto">
+
+                <div class="size-40 flex-center rounded-full">20</div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-auto">
+            <button class="button -blue-1 size-40 rounded-full border-light">
+              <i class="icon-chevron-right text-12"></i>
+            </button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    {% include "db_footer.html" %}
+  </div>
+</div>
+
+{% endblock %}

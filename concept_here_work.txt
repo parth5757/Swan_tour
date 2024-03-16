@@ -1,0 +1,149 @@
+Paginator
+CreateView, ListView, TemplateView
+UpdateView, DeleteView, FormView
+messages
+Reverse_page
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City and Place Selection</title>
+  <!-- CSS for select2 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <!-- jQuery library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- JavaScript for select2 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    .select2-container {
+      width: 300px;
+      margin-bottom: 10px;
+    }
+
+    .select2-container--default .select2-selection--multiple {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+      list-style: none;
+      padding: 5px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+      background-color: #007bff;
+      color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+      margin-right: 5px;
+      color: #fff;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+      color: #fff;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select City and Place</h2>
+  
+  <label for="city">Select City:</label>
+  <select id="city" multiple class="js-example-basic-multiple">
+    <option value="newyork">New York</option>
+    <option value="london">London</option>
+    <option value="paris">Paris</option>
+    <option value="tokyo">Tokyo</option>
+    <option value="rome">Rome</option>
+  </select>
+  
+  <div id="place-container">
+    <label for="place">Selected Places:</label>
+    <select id="place" multiple class="js-example-basic-multiple">
+    </select>
+  </div>
+  
+  
+
+  <!-- Places data -->
+  <optgroup label="New York" id="newyorkPlaces" class="hidden">
+    <option value="centralpark">Central Park</option>
+    <option value="statueofliberty">Statue of Liberty</option>
+    <option value="timessquare">Times Square</option>
+  </optgroup>
+
+  <optgroup label="London" id="londonPlaces" class="hidden">
+    <option value="bigben">Big Ben</option>
+    <option value="londoneye">London Eye</option>
+    <option value="britishmuseum">British Museum</option>
+  </optgroup>
+
+  <optgroup label="Paris" id="parisPlaces" class="hidden">
+    <option value="eiffeltower">Eiffel Tower</option>
+    <option value="louvre">Louvre Museum</option>
+    <option value="notredame">Notre Dame Cathedral</option>
+  </optgroup>
+
+  <optgroup label="Tokyo" id="tokyoPlaces" class="hidden">
+    <option value="tokyotower">Tokyo Tower</option>
+    <option value="meijijingu">Meiji Jingu Shrine</option>
+    <option value="shinjuku">Shinjuku Gyoen National Garden</option>
+  </optgroup>
+
+  <optgroup label="Rome" id="romePlaces" class="hidden">
+    <option value="colosseum">Colosseum</option>
+    <option value="vatican">Vatican City</option>
+    <option value="trevifountain">Trevi Fountain</option>
+  </optgroup>
+</body>
+<script>
+    $(document).ready(function() {
+      // Initialize select2 on city and place selects
+      $('.js-example-basic-multiple').select2({
+        width: '100%'
+      });
+      
+      // Event handler for city selection change
+      $('#city').on('change', function() {
+        var selectedCities = $(this).val();
+        var placeSelect = $('#place');
+        
+        // Clear all options first
+        placeSelect.empty();
+        
+        // Show default message if no city selected
+        if (!selectedCities || selectedCities.length === 0) {
+          placeSelect.append($('<option>').text('Select a City first'));
+          return;
+        }
+        
+        // Loop through selected cities and add places
+        selectedCities.forEach(city => {
+          var cityPlaces = $('#' + city + 'Places option').clone();
+          placeSelect.append(cityPlaces);
+        });
+        
+        // Trigger change event to update select2
+        placeSelect.trigger('change');
+      });
+    });
+  </script>
+</html>

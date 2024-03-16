@@ -1,0 +1,549 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    {% include 'css.html' %}
+        <!-- Slick css -->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick.min.css' %}" />
+        <!--slick-theme.css-->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick-theme.min.css' %}" />
+        <style>
+            .imgs_up{
+                height: 550px;
+                width: 1000px;
+            }
+            .imgs_bt{
+                height: 100px;
+                width: 140px;
+            }
+            .horizontal-scroll-contaner{
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 20px;
+            }
+            .col-auto{
+                display: inline-block;
+                margin-right: 10px;
+                vertical-align:top;
+            }
+        </style>
+</head>
+
+<body>
+    <!-- preloader Area -->
+    {% comment %} {% include 'loader.html' %} {% endcomment %}
+
+    <!-- Header Area -->
+
+    {% include 'header.html' %}
+    <!-- Common Banner Area -->
+    <section id="common_banner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="common_bannner_text">
+                        <h2>Explore the evergreen forest</h2>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><span><i class="fas fa-circle"></i></span><a href="tour-search.html">Tours</a></li>
+                            <li><span><i class="fas fa-circle"></i></span> Tours Details</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tour Search Areas -->
+    <section id="tour_details_main" class="section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="tour_details_leftside_wrapper">
+                        <div class="tour_details_heading_wrapper">
+                            <div class="tour_details_top_heading">
+                                <h2>{{ tour.name }}</h2>
+                                <h5><i class="fas fa-map-marker-alt"></i> 
+                                    {% for place in tour.place.all  %}
+                                        {{ place.name }},
+                                    {% endfor %}
+                                    </h5>
+                            </div>
+                            <div class="tour_details_top_heading_right">
+                                <h4>
+                                    {% if tour.rating >= 5 %}
+                                        <p>Excellent</p>
+                                    {% elif tour.rating > 4 %}
+                                        <p>Good</p>
+                                    {% elif tour.rating > 3 %}
+                                        <p>Average</p>
+                                    {% elif tour.rating > 2 %}
+                                        <p>ok</p>
+                                    {% else %}
+                                        <p>Newly Added</p>
+                                    {% endif %}
+                                </h4>
+                                <h6>{{ tour.rating }}/5</h6>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="tour_details_top_bottom">
+                            <div class="toru_details_top_bottom_item">
+                                <div class="tour_details_top_bottom_icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="tour_details_top_bottom_text">
+                                    <h5>Duration</h5>
+                                    <p>{{ tour.no_of_day }} Days</p>
+                                </div>
+                            </div>
+                            <div class="toru_details_top_bottom_item">
+                                <div class="tour_details_top_bottom_icon">
+                                    <image src="{{ tour.tour_type.image.url }}" alt="tour_type"/ type="icon">
+                                </div>
+                                <div class="tour_details_top_bottom_text">
+                                    <h5>Tour type</h5>
+                                    <p>{{ tour.tour_type }}</p>
+                                </div>
+                            </div>
+                            <div class="toru_details_top_bottom_item">
+                                <div class="tour_details_top_bottom_icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="tour_details_top_bottom_text">
+                                    <h5>Group size</h5>
+                                    <p>{{ tour.group_size }} Pepole</p>
+                                </div>
+                            </div>
+                            <div class="toru_details_top_bottom_item">
+                                <div class="tour_details_top_bottom_icon">
+                                    <i class="fas fa-map-marked"></i>
+                                </div>
+                                <div class="tour_details_top_bottom_text">
+                                    <h5>Location</h5>
+                                    <p>
+                                        {% for city in tour.city.all  %}
+                                            {{ city.name }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tour_details_img_wrapper">
+                            <div class="slider slider-for">
+                                <div>
+                                    <img class="imgs_up" src="{{ tour.tour_image.url }}" alt="img">
+                                </div>
+                                <div>
+                                    <img class="imgs_up" src="{{ tour.image_2.url }}" alt="img">
+                                </div>
+                                <div>
+                                    <img class="imgs_up" src="{{ tour.image_3.url }}" alt="img">
+                                </div>
+                                {% for i in tour.hotels.all  %}
+                                    <div>
+                                        <img class="imgs_up" src="{{ i.hotel_image.url }}" alt="img">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="slider slider-nav">
+                                <div>
+                                    <img class="imgs_bt" src="{{ tour.tour_image.url }}" alt="img">
+                                </div>
+                                <div>
+                                    <img class="imgs_bt" src="{{ tour.image_2.url }}" alt="img">
+                                </div>
+                                <div>
+                                    <img class="imgs_bt" src="{{ tour.image_3.url }}" alt="img">
+                                </div>
+                                {% for i in tour.hotels.all  %}
+                                    <div>
+                                        <img class="imgs_bt" src="{{ i.hotel_image.url }}" alt="img">
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <div class="tour_details_boxed">
+                            <h3 class="heading_theme">Overview</h3>
+                            <div class="tour_details_boxed_inner">
+                                <p>
+                                    {{ tour.overview }}
+                                </p>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tour_details_boxed">
+                            <h3 class="heading_theme">Itinerary</h3>
+                            <div class="tour_details_boxed_inner">
+                                <div class="accordion" id="accordionExample">
+                                    {% for day, itinerary in itineraries.items %}
+                                    <div class="accordion_flex_area">
+                                        <div class="accordion_left_side">
+                                            <h5>day {{ forloop.counter }}</h5>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false"
+                                                    aria-controls="collapse{{ forloop.counter }}">
+                                                    day {{ forloop.counter }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse show"
+                                                aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <div class="accordion_itinerary_list">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="fas fa-circle"></i>
+                                                                {{ itinerary }}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tour_details_boxed">
+                            <h3 class="heading_theme">Included/Excluded</h3>
+                            <div class="tour_details_boxed_inner">
+                                <p>
+                                    Stet clitaStet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
+                                    sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+                                    eirmod.
+                                </p>
+                                <ul>
+                                    <li><i class="fas fa-circle"></i>Buffet breakfast as per the Itinerary</li>
+                                    <li><i class="fas fa-circle"></i>Visit eight villages showcasing Polynesian culture
+                                    </li>
+                                    <li><i class="fas fa-circle"></i>Complimentary Camel safari, Bonfire, and Cultural
+                                        Dance at Camp</li>
+                                    <li><i class="fas fa-circle"></i>All toll tax, parking, fuel, and driver allowances
+                                    </li>
+                                    <li><i class="fas fa-circle"></i>Comfortable and hygienic vehicle (SUV/Sedan) for
+                                        sightseeing on all days as per the itinerary.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="horizontal-scroll-contaner">
+                                {% for hotel in tour.hotels.all %}
+                                    <div class="col-auto">
+                                    <button class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1">{{hotel.hotelname}}, {{hotel.city.name}}</button>
+                                    <img class="imgs_up" src="{{ hotel.hotel_image.url }}" alt="img" style="height: 200px; width: 200px;">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tour_details_boxed">
+                            <h3 class="heading_theme">Tours location</h3>
+                            <div class="map_area">
+                                <iframe
+                                    src="{{ tour.map_link }}"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="tour_details_right_sidebar_wrapper">
+                        <div class="tour_detail_right_sidebar">
+                            <div class="tour_details_right_boxed">
+                                <div class="tour_details_right_box_heading">
+                                    <h3>Standard package</h3>
+                                </div>
+                                <div class="valid_date_area">
+                                    <div class="valid_date_area_one">
+                                        <h5>Valid from</h5>
+                                        <p>{{ tour.start_date }}</p>
+                                    </div>
+                                    <div class="valid_date_area_one">
+                                        <h5>Valid till</h5>
+                                        <p>{{ tour.end_date }}</p>
+                                    </div>
+                                </div>
+                                <div class="tour_package_details_bar_list">
+                                    <h5>Package details</h5>
+                                    <ul>
+                                        <li><i class="fas fa-circle"></i>Buffet breakfast as per the Itinerary</li>
+                                        <li><i class="fas fa-circle"></i>Visit eight villages showcasing Polynesian
+                                            culture
+                                        </li>
+                                        <li><i class="fas fa-circle"></i>Complimentary Camel safari, Bonfire,</li>
+                                        <li><i class="fas fa-circle"></i>All toll tax, parking, fuel, and driver
+                                            allowances
+                                        </li>
+                                        <li><i class="fas fa-circle"></i>Comfortable and hygienic vehicle</li>
+                                    </ul>
+                                </div>
+                                <div class="tour_package_details_bar_price">
+                                    <h5>Price</h5>
+                                    <div class="tour_package_bar_price">
+                                        {% comment %} <h6><del>₹</del></h6> {% endcomment %}
+                                        <h3>₹{{tour.total_price}} <sub>/Per serson</sub> </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tour_select_offer_bar_bottom">
+                                <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Select
+                                    offer</button>
+                            </div>
+                        </div>
+
+                        <div class="tour_detail_right_sidebar">
+                            <div class="tour_details_right_boxed">
+                                <div class="tour_details_right_box_heading">
+                                    <h3>Why choose us</h3>
+                                </div>
+
+                                <div class="tour_package_details_bar_list first_child_padding_none">
+                                    <ul>
+                                        <li><i class="fas fa-circle"></i>Buffet breakfast as per the Itinerary</li>
+                                        <li><i class="fas fa-circle"></i>Visit eight villages showcasing Polynesian
+                                            culture
+                                        </li>
+                                        <li><i class="fas fa-circle"></i>Complimentary Camel safari, Bonfire,</li>
+                                        <li><i class="fas fa-circle"></i>All toll tax, parking, fuel, and driver
+                                            allowances
+                                        </li>
+                                        <li><i class="fas fa-circle"></i>Comfortable and hygienic vehicle</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="write_your_review_wrapper">
+                        <h3 class="heading_theme">Write your review</h3>
+                        <div class="write_review_inner_boxed">
+                            <form action="https://andit.co/projects/html/and-tour/demo/!#" id="news_comment_form">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-froup">
+                                            <input type="text" class="form-control bg_input"
+                                                placeholder="Enter full name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-froup">
+                                            <input type="text" class="form-control bg_input"
+                                                placeholder="Enter email address">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-froup">
+                                            <textarea rows="6" placeholder="Write your comments"
+                                                class="form-control bg_input"></textarea>
+                                        </div>
+                                        <div class="comment_form_submit">
+                                            <button class="btn btn_theme btn_md">Post comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="all_review_wrapper">
+                        <h3 class="heading_theme">All review</h3>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="all_review_box">
+                        <div class="all_review_date_area">
+                            <div class="all_review_date">
+                                <h5>08 Dec, 2021</h5>
+                            </div>
+                            <div class="all_review_star">
+                                <h5>Excellent</h5>
+                                <div class="review_star_all">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="all_review_text">
+                            <img src="{% static 'assets/img/review/review1.png' %}" alt="img">
+                            <h4>Manresh Chandra</h4>
+                            <p>" Loved the overall tour for all 6 days covering jaipur jodhpur and jaisalmer. worth ur
+                                money for sure. thanks. Driver was very good and polite and safe driving for all 6 days.
+                                on time pickup and drop overall. Thanks for it. "</p>
+                        </div>
+                        <div class="all_review_small_img">
+                            <div class="all_review_small_img_item">
+                                <img src="{% static 'assets/img/review/review-small1.png' %}" alt="img">
+                            </div>
+                            <div class="all_review_small_img_item">
+                                <img src="{% static 'assets/img/review/review-small2.png' %}" alt="img">
+                            </div>
+                            <div class="all_review_small_img_item">
+                                <img src="{% static 'assets/img/review/review-small3.png' %}" alt="img">
+                            </div>
+                            <div class="all_review_small_img_item">
+                                <img src="{% static 'assets/img/review/review-small4.png' %}" alt="img">
+                            </div>
+                            <div class="all_review_small_img_item">
+                                <img src="{% static 'assets/img/review/review-small5.png' %}" alt="img">
+                            </div>
+                            <div class="all_review_small_img_item">
+                                <h5>+5</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Related tour packages Area --><!-- Remaining to work -->
+    <section id="related_tour_packages" class="section_padding_bottom">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="section_heading_center">
+                        <h2>Related tour packages</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="promotional_tour_slider owl-theme owl-carousel dot_style">
+                    <div class="theme_common_box_two img_hover">
+                        <div class="theme_two_box_img">
+                            <a href="hotel-details.html"><img src="{% static 'assets/img/tab-img/hotel1.png' %}" alt="img"></a>
+                            <p><i class="fas fa-map-marker-alt"></i>New beach, Thailand</p>
+                        </div>
+                        <div class="theme_two_box_content">
+                            <h4><a href="hotel-details.html">Kantua hotel, Thailand</a></h4>
+                            <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
+                                    reviewes)</span></p>
+                            <h3>$99.00 <span>Price starts from</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer  -->
+    {% include 'footer.html' %}
+    <div class="go-top">
+        <i class="fas fa-chevron-up"></i>
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+
+    <!-- Offcanvas Area -->
+    <div class="offcanvas select_offer_modal offcanvas-end" tabindex="-1" id="offcanvasRight"
+        aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Book now</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="side_canvas_wrapper">
+                <h2>{{ tour.name }} </h2>
+                <h3 class="alert alert-danger">{{ message }}</h3>
+                <div class="select_person_side">
+                    <h3>Select person</h3>
+                    <p>available seat: {{ tour.get_available_group_size }}</p>
+                    <div class="select_person_item">
+                        <div class="select_person_left">
+                            <h6>Adult</h6>
+                            <p>12y+</p>
+                        </div>
+                        <div class="select_person_right">
+                            <div class="button-set">
+                                <button type="button" class="increment">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <input type="hidden">
+                                <span class="count">01</span>
+                                <button type="button" class="decrement">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-froup">
+                    </div>
+                    <div class="form-check write_spical_check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf1" checked>
+                        <label class="form-check-label" for="flexCheckDefaultf1">
+                            <span class="main_spical_check">
+                                <span>I read and accept all <a href="">Terms and conditions</a></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+                
+            <form action="{% url 'tour_booking_session' slug=tour.tour_slug %}" method="POST" id="systemForm">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ tour.id }}" name="tour_id">
+                    <input type="hidden" value="1" class="no_of_people_booking" name="no_of_people_booking">
+                    <!-- Updated "form" attribute to match the form ID -->                
+                    <button type="submit" 
+                    {% if message is not None %}disabled{% endif %}
+                    value="proceed_for_booking" form="systemForm" class="btn btn_theme btn_md w-100">Proceed to Booking</button>
+            </form>
+        </div>
+    </div>
+
+    {% include 'js.html' %}
+    <!-- Slick js -->
+    <script src="{% static 'assets/js/slick.min.js' %}"></script>
+    <script src="{% static 'assets/js/slick-slider.js' %}"></script>
+    <script>
+        const decrementButton = document.querySelector('.decrement');
+        const incrementButton = document.querySelector('.increment');
+        //const proceed = document.querySelector('.proceed_for_booking')
+        const countElement = document.querySelector('.count');
+        const peopleElement = document.querySelector('.no_of_people_booking');
+        let count = parseInt(countElement.textContent); // Initialize count from the displayed value
+        
+        decrementButton.addEventListener('click', () => {
+            if (count > 1) { // Ensure the count does not go below 1
+                count--;
+                updateCount();
+            }
+        });
+        
+        incrementButton.addEventListener('click', () => {
+            if (count < {{ tour.get_available_group_size }}) {
+                count++;
+                updateCount();
+            }
+        });
+        
+        function updateCount() {
+            countElement.textContent = count;
+            peopleElement.value = count; // Update the value of the input field
+            //updateLocale();
+        }
+        function updateLocale() {
+            localStorage.setItem('no_of_people_booking', count); // Update
+            localStorage.setItem('tour_id', {{ tour.id}}); // Update
+        }
+    </script>
+
+    
+</body>
+</html>
