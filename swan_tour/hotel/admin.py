@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Hotel, Hotel_Review, Hotel_Booking
+from .models import Hotel, Hotel_Review, HotelBooking, HotelImage, HotelFacilitys
 from core.models import State, City
 # Register your models here.
 
@@ -13,6 +13,9 @@ class HotelAdmin(admin.ModelAdmin):
 class HotelBookingAdmin(admin.ModelAdmin):
     list_display =('user', 'hotel', 'first_name', 'last_name', 'valid_date_from', 'valid_date_till', 'no_room_booking', 'total_price')
 
+
 admin.site.register(Hotel)
 admin.site.register(Hotel_Review)
-admin.site.register(Hotel_Booking)
+admin.site.register(HotelBooking)
+admin.site.register(HotelImage)
+admin.site.register(HotelFacilitys)

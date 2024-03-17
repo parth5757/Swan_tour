@@ -1,6 +1,7 @@
 from django.db import models
 from app.models import BaseModel
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+# from django.contrib.postgres.fields import JSONField
 # from .managers import User    
 from django.utils.translation import gettext_lazy as _
 
@@ -20,7 +21,7 @@ class City(BaseModel):
     code = models.CharField(max_length=4, unique=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='image/city')
-
+    location = models.JSONField(null=True, blank=True) # JSONField to store latitude and longitude
 
     def code_genrator(self):
         # genrating unique city code

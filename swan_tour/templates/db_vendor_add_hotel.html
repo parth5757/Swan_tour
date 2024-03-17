@@ -2,14 +2,12 @@
 {% block title%}Swan Tour hotels{% endblock %}
 {%  block dashboard %}
 
-
-
 <div class="dashboard__main">
   <div class="dashboard__content">
     <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
       <div class="col-auto">
         <h1 class="text-30 lh-14 fw-600">Add Hotels</h1>
-        <div class="text-15 text-light-1">Let's add new hotel to make swan tour more and more bigger.</div>
+        <div class="text-15 text-light-1">Let's add a new hotel to make Swan Tour even bigger.</div>
       </div>
       <div class="col-auto">
       </div>
@@ -29,110 +27,92 @@
           <div class="tabs__content pt-30 js-tabs-content">
             <div class="tabs__pane -tab-item-1 is-tab-el-active">
               <div class="col-xl-10">
-                  <div class="border-top-light mt-30 mb-30"></div>
-                  <div class="row x-gap-20 y-gap-20">
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Hotel name</label>
-                        <input type="text" name="hotelname" required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">address </label>
-                        <input type="text" name="address" required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Enter google map url</label>
-                        <input type="url" name="map_link" required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Total Room</label>
-                        <input type="number" name="total_room" max=100 required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1 ">price</label>
-                        <input type="numebr" name="price" min=3 required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1 ">Rating</label>
-                        <input type="numebr" name="rating" min=3 required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Facility</label>
-                        <input type="text" name="facility" required>
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input">
-                        <label class="lh-1 text-16 text-light-1">City</label>
-                        <select class="form-control form-select bg_input" name="city" id="citySelect" required>
-                          <option value="" dissabled selected>select city</option>
-                          {% for city in cities %}
-                          <option value="{{city.id}}">{{city.name}}</option>
-                          {% endfor %}
-                        </select>
-                        </div>
-                    </div> 
-                    <div class="col-6">
-                      <div class="form-input">
-                        <label class="lh-1 text-16 text-light-1">Place</label>
-                        <select class="form-control form-select bg_input" name="place" id="placeSelect" required>
-                          <option value="" dissabled selected>select place</option>
-                          {% for place in placies  %}
-                          <option value="{{place.id}}" data-city="{{place.city.id}}">{{place.name}}</option>
-                          {% endfor %}
-                        </select>
-                        </div>
-                    </div> 
-                    <!--image -->
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Hotel Image</label>
-                        <input class="form-control form-control-lg" name="hotel_image" type="file">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <label class="lh-1 text-16 text-light-1">Room Image</label>
-                        <input class="form-control form-control-lg" name="room_image" type="file">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="fw-500">Optional image</div>
-                      <div class="form-input ">
-                        <input class="form-control form-control-lg" name="image_3" type="file">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <div class="fw-500">Optional image</div>
-                        <input class="form-control form-control-lg" name="image_4" type="file">
-                      </div>
-                    </div>
-                    <div class="col-6">
-                      <div class="form-input ">
-                        <div class="fw-500">Optional image</div>
-                        <input class="form-control form-control-lg" name="image_5" type="file">
-                      </div>
-                    </div>
-                    <div class="col-12">
-                        <button  class="button h-50 px-24 -dark-1 bg-blue-1 text-white">Save Deails</button>
+                <div class="border-top-light mt-30 mb-30"></div>
+                <div class="row x-gap-20 y-gap-20">
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Hotel name</label>
+                      <input type="text" name="hotelname" required>
                     </div>
                   </div>
-              </div>  
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Address</label>
+                      <input type="text" name="address" required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Enter Google Map URL</label>
+                      <input type="url" name="map_link" required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Total Room</label>
+                      <input type="number" name="total_room" max="100" required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Price</label>
+                      <input type="number" name="price" min="3" required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Rating</label>
+                      <input type="number" name="rating" value="0" readonly required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Facility</label>
+                      <input type="text" name="facility" required>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Overview</label>
+                      <textarea name="overview" required></textarea>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input">
+                      <label class="lh-1 text-16 text-light-1">City</label>
+                      <select class="form-control form-select bg_input" name="city" id="citySelect" required>
+                        <option value="" disabled selected>Select city</option>
+                        {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-input">
+                      <label class="lh-1 text-16 text-light-1">Place</label>
+                      <select class="form-control form-select bg_input" name="place" id="placeSelect" required>
+                        <option value="" disabled selected>Select place</option>
+                        {% for place in placies %}
+                        <option value="{{ place.id }}" data-city="{{ place.city.id }}">{{ place.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Multiple Image Upload -->
+                  <div class="col-12">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Upload Images (Max 5)</label>
+                      <input class="form-control form-control-lg" name="images" type="file" multiple>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="button h-50 px-24 -dark-1 bg-blue-1 text-white">Save Details</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <diV>
+          </div>
         </form>
       </div>
     </div>
@@ -143,40 +123,41 @@
 <!-- JavaScript -->
 {% include "db_js.html" %}
 <script>
-// Disable the "Place" dropdown initially
-document.addEventListener('DOMContentLoaded', function() {
-const placeSelect = document.getElementById('placeSelect');
-placeSelect.disabled = true; // Disable the "Place" dropdown initially
-});
- 
-document.getElementById('citySelect').addEventListener('change', updatePlaceOptions);
-
-function updatePlaceOptions() {
-  const citySelect = document.getElementById('citySelect');
-  const selectedCityId = citySelect.value;
-  
-  const placeSelect = document.getElementById('placeSelect');
-  const placeOptions = placeSelect.querySelectorAll('option');
-
-  // Reset the options in the "Place" dropdown
-  placeOptions.forEach(option => {
-    option.style.display = '';
+  // Disable the "Place" dropdown initially
+  document.addEventListener('DOMContentLoaded', function () {
+    const placeSelect = document.getElementById('placeSelect');
+    placeSelect.disabled = true; // Disable the "Place" dropdown initially
   });
 
- // Enable the "Place" dropdown if a city is selected 
-  if (selectedCityId) {
-    placeSelect.disabled = false; // Enable the "Place" dropdown
-  } else {
-    placeSelect.disabled = true; // Disable the "Place" dropdown if no city is selected
-  }
-  // Filter the "Place" options based on the selected city
-  if (selectedCityId) {
+  document.getElementById('citySelect').addEventListener('change', updatePlaceOptions);
+
+  function updatePlaceOptions() {
+    const citySelect = document.getElementById('citySelect');
+    const selectedCityId = citySelect.value;
+
+    const placeSelect = document.getElementById('placeSelect');
+    const placeOptions = placeSelect.querySelectorAll('option');
+
+    // Reset the options in the "Place" dropdown
     placeOptions.forEach(option => {
-      if (option.dataset.city !== selectedCityId) {
-        option.style.display = 'none';
-      }
+      option.style.display = '';
     });
+
+    // Enable the "Place" dropdown if a city is selected
+    if (selectedCityId) {
+      placeSelect.disabled = false; // Enable the "Place" dropdown
+    } else {
+      placeSelect.disabled = true; // Disable the "Place" dropdown if no city is selected
+    }
+
+    // Filter the "Place" options based on the selected city
+    if (selectedCityId) {
+      placeOptions.forEach(option => {
+        if (option.dataset.city !== selectedCityId) {
+          option.style.display = 'none';
+        }
+      });
+    }
   }
-}
 </script>
 {% endblock %}

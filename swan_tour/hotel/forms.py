@@ -1,6 +1,6 @@
 from django import forms
 # from django.forms import inlineformset_factory
-from .models import Hotel, Hotel_Booking
+from .models import Hotel, HotelBooking, HotelFacilitys, HotelImage
 
 class HotelForm(forms.ModelForm):
     class Meta:
@@ -9,5 +9,17 @@ class HotelForm(forms.ModelForm):
 
 class HotelBookingForm(forms.ModelForm):
     class Meta:
-        model = Hotel_Booking
+        model = HotelBooking
         fields = ['user', 'hotel', 'first_name', 'last_name', 'valid_date_from', 'valid_date_till', 'no_room_booking', 'total_price']
+
+
+class HotelImageForm(forms.ModelForm):
+    class Meta:
+        model = HotelImage
+        fields = ['hotel', 'image']
+
+
+class HotelFacilitysForm(forms.ModelForm):
+    class Meta:
+        model = HotelFacilitys
+        fields = ['name', 'image']

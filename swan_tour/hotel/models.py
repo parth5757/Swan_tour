@@ -39,7 +39,7 @@ class Hotel(BaseModel):
 
     # Calculate available rooms based on booked rooms between 2 dates from start date to end date
     def get_available_rooms(self, date):
-        booking_on_date = Hotel_Booking.objects.filter(hotel=self, valid_date_from__lte=date, valid_date_till__gte=date)
+        booking_on_date = HotelBooking.objects.filter(hotel=self, valid_date_from__lte=date, valid_date_till__gte=date)
 
         total_booked_room = sum(booking.no_room_booking for booking in booking_on_date)
         return self.total_room - total_booked_room # now this thing get execute in hotel booking model at save function
@@ -73,7 +73,7 @@ class Hotel_Review(BaseModel):
     class Meta:
         ordering = ('created_at',)
 
-class Hotel_Booking(BaseModel):
+class HotelBooking(BaseModel):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
@@ -93,6 +93,30 @@ class Hotel_Booking(BaseModel):
         if self.no_room_booking > self.hotel.get_available_rooms(self.valid_date_from):
             raise ValidationError({'no_room_booking': 'Number of rooms booked cannot exceed available rooms'})
     
+    def __str__(self) -> str:
+        return str(self.hotel.hotelname)
+
+    class Meta:
+        ordering = ('created_at',)
+
+
+class HotelImage(BaseModel):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='image/hotel/')
+
+
+    def __str__(self) -> str:
+        return str(self.hotel.hotelname)
+
+    class Meta:
+        ordering = ('created_at',)
+
+
+class HotelFacilitys(BaseModel):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='image/hotel/')
+
+
     def __str__(self) -> str:
         return str(self.hotel.hotelname)
 

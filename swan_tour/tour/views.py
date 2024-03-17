@@ -83,7 +83,7 @@ class TourUserListView(ListView):
     model = Tour
     context_object_name = 'tours'
     template_name = 'tour/tour_search.html'
-    paginate_by = 1
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -115,8 +115,8 @@ class TourUserListView(ListView):
         # Filter by destination (city)
         destination = self.request.GET.get('destination')
         if destination:
-             queryset = queryset.filter(city__name__icontains=destination)
-            #  queryset = queryset.filter(Q(city__name__icontains=destination) | Q(place__name__icontains=destination))
+            #  queryset = queryset.filter(city__name__icontains=destination)
+            queryset = queryset.filter(Q(city__name__icontains=destination) | Q(place__name__icontains=destination)).distinct()
 
 
 

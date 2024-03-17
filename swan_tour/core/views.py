@@ -132,7 +132,7 @@ class UserView():
     class AddCity(SuperUserView, CreateView):
         model = City
         template_name = 'admin/new_city.html'
-        fields = ['name', 'state', 'image']
+        fields = ['name', 'state', 'image', 'location']
         success_url = reverse_lazy('dashboard')
 
         def form_valid(self, form):
@@ -143,6 +143,13 @@ class UserView():
             context = super().get_context_data(**kwargs)
             context['states']= State.objects.all()
             return context
+        
+                # to check error
+        def form_invalid(self, form):
+            # print(form)
+            for error in form.errors:
+                print("==> error:", error)
+            return super().form_invalid(form)
 
     class City(ListView, SuperUserView):
         model = City

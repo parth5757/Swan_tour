@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from .models import Hotel, Hotel_Review, Hotel_Booking
+from .models import Hotel, Hotel_Review, HotelBooking, HotelImage
 from django.views.generic import CreateView, ListView, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, DeleteView, FormView
@@ -23,11 +23,19 @@ class HotelView():
         model = Hotel
         # form_class = HotelForm
         template_name = 'db_vendor_add_hotel.html'
-        fields = ['hotelname', 'address', 'map_link', 'total_room', 'price', 'rating', 'facility', 'city', 'place', 'hotel_image', 'room_image', 'image_3', 'image_4', 'image_5']
+        fields = ['hotelname', 'address', 'map_link', 'total_room', 'price', 'rating', 'overview', 'facility', 'city', 'place']
         success_url = reverse_lazy('db_hotel_list')
         
         def form_valid(self, form): 
-            form.save()
+            form.instance.manager = self.request.user
+            hotel = form.save()
+
+            # save multiple images for tour
+            images = self.request.FILES.getlist('images')
+            for image in images:
+                HotelImage.objects.create(hotel=hotel, image=image)
+            messages.success(self.request, "The Hotel was created successfully.")
+            
             return super().form_valid(form)
         
         # to check error
@@ -36,7 +44,7 @@ class HotelView():
             for error in form.errors:
                 print("==> error:", error)
             return super().form_invalid(form)
-
+    
         
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
@@ -75,7 +83,7 @@ class HotelView():
 
 
     class HotleBookingListView(SuperUserView, ListView):
-        model = Hotel_Booking
+        model = HotelBooking
         context_object_name = 'hotel_booking'
         template_name = 'hotel_booking_list.html'
 

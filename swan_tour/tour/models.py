@@ -70,8 +70,6 @@ class Tour(BaseModel):
     class Meta:
         ordering = ('created_at',)
 
-# class TourImage(BaseModel)
-
 class TourReview(BaseModel):
 
     def validate_max_value(value):
