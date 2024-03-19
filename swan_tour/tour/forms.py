@@ -1,10 +1,10 @@
 from django import forms
 from .models import Tour, TourReview, TourBooking, TourBookingName, TourImage
 
-class TourForm(forms.Form):
+class TourForm(forms.ModelForm):
     class Meta:
         model  = Tour
-        fiels = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'included', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
+        fields = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'included', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
         # fields = '__all__'
 
 

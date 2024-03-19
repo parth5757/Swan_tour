@@ -3,6 +3,20 @@
 
 {% block styles %}
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  <style>
+    table.dataTable {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    table.dataTable thead th,
+    table.dataTable tbody td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+    table.dataTable thead th {
+      background-color: #f2f2f2;
+    }
+  </style>
 {% endblock %}
 
 {% block dashboard %}
@@ -12,8 +26,9 @@
       <div class="col-auto">
         <h1 class="text-30 lh-14 fw-600">All Destinations              
           <a href="{% url 'add_place' %}" class="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-          Add New Destination
-        </a></h1>
+            Add New Destination
+          </a>
+        </h1>
         <div class="text-15 text-light-1">Add New Destination in Swan Tour</div>
       </div>
       <div class="col-auto">
@@ -52,6 +67,9 @@
 {% block js %}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
   <script>
     $(document).ready(function() {
       $('#places-table').DataTable({
@@ -81,88 +99,12 @@
               `;
             }
           }
+        ],
+        "dom": 'Bfrtip',
+        "buttons": [
+          'copy', 'excel', 'pdf', 'print'
         ]
       });
     });
   </script>
 {% endblock %}
-{% comment %} {% extends "base.html" %}
-{% block title%}Swan Tour places{% endblock %}
-{% block styles %}
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-{% endblock %}
-
-{% block dashboard %}
-<div class="dashboard__main">
-  <div class="dashboard__content">
-    <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
-      <div class="col-auto">
-        <h1 class="text-30 lh-14 fw-600">All Destination              
-          <a href="{% url 'add_place' %}" class="button h-50 px-24 -dark-1 bg-blue-1 text-white">
-          Add New Destination
-        </a></h1>
-        <div class="text-15 text-light-1">Add New Destination in Swan Tour</div>
-      </div>
-      <div class="col-auto">
-      </div>
-    </div>
-    <div class="py-30 px-30 rounded-4 bg-white custom_shadow">
-      <div class="tabs -underline-2 js-tabs">
-        <div class="tabs__controls row x-gap-40 y-gap-10 lg:x-gap-20 js-tabs-controls">
-          <div class="col-auto">
-            <button class="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button is-tab-el-active" data-tab-target=".-tab-item-1">All hotels</button>
-          </div>
-        </div>
-        <div class="tabs__content pt-30 js-tabs-content">
-          <div class="overflow-scroll scroll-bar-1">
-            <table id="places-table" class="table-4 -border-bottom col-12">
-              <thead class="bg-light-2">
-                <tr>
-                  <th>id</th>
-                  <th>Place Name</th>
-                  <th>City</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for place in place %}
-                <tr>
-                  <td>{{ place.id }}</td>
-                  <td>{{ place.name }}</td>
-                  <td>{{ place.city }}</td>  
-                  <td>
-                    <div class="row x-gap-10 y-gap-10 items-center">
-                      <div class="col-auto">
-                        <button class="flex-center bg-light-2 rounded-4 size-35 edit-button" data-id="{{ place.id }}">
-                          <i class="icon-edit text-16 text-light-1"></i>
-                        </button>
-                      </div>
-                      <div class="col-auto">
-                        <button class="flex-center bg-light-2 rounded-4 size-35 delete-button" data-id="{{ place.id }}">
-                          <i class="icon-trash-2 text-16 text-light-1"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% include "db_footer.html" %}
-  </div>
-</div>
-{% endblock %}x
-
-{% block scripts %}
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      $('#places-table').DataTable();
-    });
-  </script>
-{% endblock %} {% endcomment %}

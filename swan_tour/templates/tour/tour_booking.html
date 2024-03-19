@@ -215,7 +215,9 @@
     {% include 'footer.html' %}
 
     
+    
     {% include 'js.html' %}
+    <!-- <script src="{% static 'assets/js/tour_booking.js' %}"></script> -->
 
     <script>
 
@@ -235,7 +237,7 @@
             const hidden_total_priceElement = document.getElementById('hidden_total_price');
     
             let count =  {{no_of_people_booking}}; // Initialize count to  1 as per your requirement
-
+    
             decrementButton.addEventListener('click', () => {
                 if (count >  1) { // Ensure the count does not go below  1
                     count--;
@@ -280,13 +282,13 @@
                 amount1Element.textContent = final_amount
                 hidden_total_priceElement.value = final_amount;
             }
-
+    
             function update_hidden_fields() {
                 final_amount = {{no_of_people_booking}} * {{ tour.total_price }};
                 hidden_total_priceElement.value = final_amount;
             }
-
-
+    
+    
             // this work fine
             function update(){
                 let final_amount = {{no_of_people_booking}} * {{ tour.total_price }};
@@ -299,16 +301,33 @@
                     addInputFields();
                 }
             }
-
-
+    
+    
             function on_load(){
                 update_input_field();
                 update();
                 update_hidden_fields();
             }
-
+    
             window.onload = on_load();
         });
     </script>
+
+
 </body> 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -85,7 +85,7 @@
                     <div class="left_side_search_area">
                         <!-- Filter by Tour Name -->
                         <div class="left_side_search_boxed">
-                            <div class="left_side_search_heading">
+                            <div class="left_side_search_heading"> <!-- tour search name is comming from url now use js-->
                                 <h5>Search by name</h5>
                             </div>
                             <div class="name_search_form">
@@ -111,7 +111,8 @@
                             <div class="filter_review">
                                 <form class="review_star">
                                     <div class="form-check">
-                                        <input class="form-check-input review-checkbox" type="checkbox" value="5" id="five-star">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="5" id="five-star"{% if '5' in ratings %} checked {% endif %}>
+      
                                         <label class="form-check-label" for="five-star">
                                             <i class="fas fa-star color_theme"></i>
                                             <i class="fas fa-star color_theme"></i>
@@ -121,7 +122,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input review-checkbox" type="checkbox" value="4" id="five-star">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="4" id="five-star" {% if '4' in ratings %} checked {% endif %}>
                                         <label class="form-check-label" for="four-star">
                                             <i class="fas fa-star color_theme"></i>
                                             <i class="fas fa-star color_theme"></i>
@@ -130,7 +131,7 @@
                                             <i class="fas fa-star color_asse"></i>
                                         </label>
                                     </div>
-                                    <div class="form-check">
+                                    <div class="form-check" {% if '3' in ratings %} checked {% endif %}>
                                         <input class="form-check-input review-checkbox" type="checkbox" value="3" id="five-star">
                                         <label class="form-check-label" for="three-star">
                                             <i class="fas fa-star color_theme"></i>
@@ -141,7 +142,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input review-checkbox" type="checkbox" value="2" id="five-star">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="2" id="five-star" {% if '2' in ratings %} checked {% endif %}>
                                         <label class="form-check-label" for="two-star">
                                             <i class="fas fa-star color_theme"></i>
                                             <i class="fas fa-star color_theme"></i>
@@ -151,7 +152,7 @@
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input review-checkbox" type="checkbox" value="1" id="five-star">
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="1" id="five-star" {% if '1' in ratings %} checked {% endif %}>
                                         <label class="form-check-label" for="one-star">
                                             <i class="fas fa-star color_theme"></i>
                                             <i class="fas fa-star color_asse"></i>
@@ -164,7 +165,7 @@
                                 <button class="apply-review apply" type="button">Apply</button>
                             </div>
                         </div>
-                        <!-- Filter by Tour type -->
+                        <!-- Filter by Tour type --> <!-- tour type fiter not comming back-->
                         <div class="left_side_search_boxed">
                             <div class="left_side_search_heading">
                                 <h5>Tour type</h5>
@@ -172,7 +173,7 @@
                             <div class="tour_search_type">
                                 {% for tour_type in tour_types %}
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="{{tour_type.id}}" id="tourType{{tour_type.id}}">
+                                        <input class="form-check-input tour-type-checkbox" type="checkbox" value="{{tour_type.id}}" id="tourType{{tour_type.id}}" {% if tour_type.id in tour_types %} checked {% endif %} >
                                         <label class="form-check-label " for="tourType{{tour_type.id}}">
                                             <span class="area_flex_one">
                                                 <span>{{ tour_type.name }}</span>
@@ -181,13 +182,13 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <button class="apply-tour_type apply" type="button">Apply</button>
+                            <button class="apply-tour-type apply" type="button">Apply</button>
                         </div>  
                     </div>
                 </div>
                 <div class="col-lg-9">
                     <div class="row">
-                        {% for tour in tour1 %}
+                        {% for tour in tours %}
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="top_destinations_box img_hover">
                                 <!-- <div class="heart_destinations">
@@ -209,33 +210,33 @@
                         <div class="col-lg-12">
                             <div class="pagination_area">
                                 <ul class="pagination">
-                                    {% if tour1.has_previous %}
+                                    {% if tours.has_previous %}
                                         <li class="page-item">
                                             <a class="page-link" href="?page=1{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}{% if destination %}&destination={{ destination }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}" aria-label="First">
                                                  <span aria-hidden="true">&laquo;&laquo;</span>
                                             </a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ tour1.previous_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}{% if destination %}&destination={{ destination }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}" aria-label="Previous">
+                                            <a class="page-link" href="?page={{ tours.previous_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}{% if destination %}&destination={{ destination }}{% endif %}{% if start_date %}&start_date={{ start_date }}{% endif %}" aria-label="Previous">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
                                     {% endif %}
-                                    {% for page_num in tour1.paginator.page_range %}
-                                        {% if tour1.number == page_num %}
+                                    {% for page_num in tours.paginator.page_range %}
+                                        {% if tours.number == page_num %}
                                             <li class="page-item active"><span class="page-link">{{ page_num }}</span></li>
                                         {% else %}
                                             <li class="page-item"><a class="page-link" href="?page={{ page_num }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}">{{ page_num }}</a></li>
                                         {% endif %}
                                     {% endfor %}
-                                    {% if tour1.has_next %}
+                                    {% if tours.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ tour1.next_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Next">
+                                            <a class="page-link" href="?page={{ tours.next_page_number }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Next">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ tour1.paginator.num_pages }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Last">
+                                            <a class="page-link" href="?page={{ tours.paginator.num_pages }}{% if ratings %}&ratings={{ ratings }}{% endif %}{% if search_name %}&search={{ search_name }}{% endif %}" aria-label="Last">
                                                 <span aria-hidden="true">&raquo;&raquo;</span>
                                             </a>
                                         </li>
@@ -256,7 +257,6 @@
     <script src="{% static 'assets/js/autocomplete.js' %}"></script> 
 
     <script src="{% static 'assets/js/tour_js.js' %}"></script>
-
 
     <!-- Custom js -->
     <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>

@@ -7,7 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, FormView
 from django.views.generic import CreateView, TemplateView, ListView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
-from django.contrib import messages
+from django.contrib import messages 
 from bus.models import Bus
 from .forms import TourForm, TourBookingNameForm, TourBookingForm, TourImageForm
 from hotel.models import Hotel
@@ -36,7 +36,7 @@ class TourListView(SuperUserView, ListView):
 class TourCreateView(SuperUserView, CreateView):
     model = Tour
     template_name = 'new_tour.html'
-    fields = '__all__'
+    fields = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'included', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
     success_url = reverse_lazy('db_tour_list')
 
     def get_context_data(self, **kwargs):
@@ -62,7 +62,7 @@ class TourCreateView(SuperUserView, CreateView):
 
     # to check error
     def form_invalid(self, form):
-        # print(form)
+        print(form)
         for error in form.errors:
             print("==> error:", error)
         return super().form_invalid(form)
@@ -90,9 +90,11 @@ class TourUserListView(ListView):
 
         # Filter tour_type
         tour_types = self.request.GET.get('tour_type')
-        # print("tour type: ", tour_types)
+        print("tour type: ", tour_types)
         if tour_types:
-            queryset = queryset.filter(tour_types__id__in=tour_types)
+            tour_type_ids = [int(i) for i in tour_types.split(',')]
+            print("tour type: ", tour_type_ids)
+            queryset = queryset.filter(tour_type_id__in=tour_type_ids)
 
         # Filter by ratings
         ratings = self.request.GET.get('ratings')
@@ -135,11 +137,11 @@ class TourUserListView(ListView):
         page = self.request.GET.get('page')
 
         try:
-            tour1 = paginator.page(page)
+            tours = paginator.page(page)
         except PageNotAnInteger:
-            tour1 = paginator.page(1)
+            tours = paginator.page(1)
         except EmptyPage:
-            tour1 = paginator.page(paginator.num_pages)
+            tours = paginator.page(paginator.num_pages)
         tour_types = TourType.objects.all()
 
         # Pass additional data to the template if needed
@@ -150,9 +152,10 @@ class TourUserListView(ListView):
         context['tour_types'] = tour_types
         # print(tour_types)
         context['tour_count'] = tour_count
-        context['tour1'] = tour1
+        # return all details of t
+        context['tours'] = tours
         context['ratings'] = self.request.GET.get('ratings', '')
-        context['search_name'] = self.request.GET.get('search', '')
+        context['search_name'] = self.request.GET.get('searh', '')
 
         return context
 
@@ -330,7 +333,10 @@ def get_name(request):
     })
 
 
-# Not Working Map
+
+
+
+# Not Working Folium Map inplace that leaft js working
 class FoliumView(TemplateView):
     template_name = "tour/map.html"
 

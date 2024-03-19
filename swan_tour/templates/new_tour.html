@@ -3,60 +3,7 @@
   {% block css %}
     <!-- CSS for select2 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <style>
-      .js-example-basic-multiple{
-        height: 20px;
-      }
-      .select2-container {
-        width: 300px;
-        margin-bottom: 10px;
-      }
-
-      .select2-container--default .select2-selection--multiple {
-        border: 1px solid #ced4da;
-        border-radius: 4px; 
-      }
-
-      .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-        list-style: none;
-        padding: 5px;
-      }
-
-      .select2-container--default .select2-selection--multiple .select2-selection__choice {
-        background-color: #007bff;
-        color: #fff;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-      }
-
-      .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-        margin-right: 5px;
-        color: #fff;
-      }
-
-      .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-        color: #fff;
-      }
-
-      .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
-        color: #fff;
-      }
-      .includedContainer { 
-        position: relative; 
-        display: inline-block; 
-      }
-      .includedContainer input { 
-        padding-right: 40px; 
-      }
-      .includedContainer button { 
-        position: absolute; 
-        top: 0; 
-        right: 0; 
-        border: none; 
-        background-color: transparent; 
-        cursor: pointer; 
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/new_tour.css' %}">
   {% endblock %}
 
   {% block title %}Add Tour{% endblock %}
@@ -123,6 +70,8 @@
                           {% endfor %}
                         </select>
                       </div>
+                      <div id="selectedCount" class="select2-selection__rendered">Select an option</div>
+
                     </div>
                     <div class="col-6">
                       <div class="form-input ">
@@ -183,9 +132,6 @@
                     <input type="hidden" name="rating" value=0>
                     <input type="hidden" name="no_of_day" id="no_of_day" value="">
                     <input type="hidden" id="itineraryJson" name="Itineraries" value="" required>
-                    <div class="form-input">
-                      <a class="button h-50 px-24 -dark-1 bg-blue-1 text-white" >Save Details</a>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -199,14 +145,16 @@
                       </div>
                     </div>
                     <input type="hidden" id="includedJson" name="includeds" value="" required>
-                    <div id="inputContainer" class="form-input"></div>
+                    <div id="inputContainer" class="form-input">
+                      <input type="text" class="form-control included-name" placeholder="Field Name" required="">
+                    </div>
 
                     <!-- here add the included section where multiple fields are added with an "Add included option" button and deleted with a "Delete" button -->
                     
                     <div id="includedContainer" class="form-input"></div>
                     <label class="button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="addIncludedField()">Add included option</label>
                   <div class="d-inline-block pt-30">
-                    <button class=" button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="saveIncludedFields()">
+                    <button  class=" button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="saveIncludedFields()">
                       Save Changes
                     </button>
                   </div>
@@ -226,56 +174,84 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
   <script>
-    $(document).ready(function() {
-      // Initialize select2 on city and place selects
-      $('.js-example-basic-multiple').select2({
-        width: '100%'
-      });
-      
-      // Event handler for city selection change
-      $('#city').on('change', function() {
-        var selectedCities = $(this).val();
-        var placeSelect = $('#place');
-        var hotelSelect = $('#hotel');
-        
-        // Clear all options first
-        placeSelect.empty();
-        hotelSelect.empty();
-        
-        // Show default message if no city selected
-        if (!selectedCities || selectedCities.length === 0) {
-          placeSelect.append($('<option>').text('Select a City first'));
-          hotelSelect.append($('<option>').text('Select a City first'));
-          return;
+  $(document).ready(function() {
+    // Initialize select2 on city and place selects
+    $('.js-example-basic-multiple').select2({
+      width: '100%',
+      placeholder: 'Select an option',
+      allowClear: true,
+      templateSelection: function(data, container) {
+        if (data.selected.length > 1) {
+          return data.selected.length + ' options selected';
         }
-        
-        // Loop through selected cities and add places
-        selectedCities.forEach(cityId => {
-          {% for place in places %}
-          if ({{ place.city.id }} == cityId) {
-            var option = new Option('{{ place.name }}, {{place.city.name}}', '{{ place.id }}', false, false);
-            placeSelect.append(option).trigger('change');
-          }
-          {% endfor %}
-          {% for hotel in hotels %}
-          if ({{ hotel.city.id }} == cityId) {
-            var option = new Option('{{ hotel.hotelname }}, {{hotel.city.name}}', '{{ hotel.id }}', false, false);
-            hotelSelect.append(option).trigger('change');
-          }
-          {% endfor %}
-        });
-      });
-      
-      // Event handler for counting selected items
-      $('.js-example-basic-multiple').on('change', function() {
-        var selectedCount = $(this).val() ? $(this).val().length : 0;
-        $('#selectedCount').text('Total Selected: ' + selectedCount);
-      });
+        return data.text;
+      },
+      escapeMarkup: function(markup) {
+        return markup;
+      }
     });
+
+    // Event handler for city selection change
+    $('#city').on('change', function() {
+      var selectedCities = $(this).val();
+      var placeSelect = $('#place');
+      var hotelSelect = $('#hotel');
+
+      placeSelect.empty().trigger('change');
+      hotelSelect.empty().trigger('change');
+
+      if (!selectedCities || selectedCities.length === 0) {
+        placeSelect.append($('<option>').text('Select a City first'));
+        hotelSelect.append($('<option>').text('Select a City first'));
+        return;
+      }
+
+      selectedCities.forEach(cityId => {
+        {% for place in places %}
+        if ({{ place.city.id }} == cityId) {
+          var option = new Option('{{ place.name }}, {{ place.city.name }}', '{{ place.id }}', false, false);
+          placeSelect.append(option).trigger('change');
+        }
+        {% endfor %}
+        {% for hotel in hotels %}
+        if ({{ hotel.city.id }} == cityId) {
+          var option = new Option('{{ hotel.hotelname }}, {{ hotel.city.name }}', '{{ hotel.id }}', false, false);
+          hotelSelect.append(option).trigger('change');
+        }
+        {% endfor %}
+      });
+
+      updateSelect2SelectionCount('#city');
+    });
+
+    // Event handler for counting selected items
+    $('.js-example-basic-multiple').on('change', function() {
+      var selectedCount = $(this).val() ? $(this).val().length : 0;
+      updateSelect2SelectionCount('#' + $(this).attr('id'));
+    });
+
+    // Function to update Select2 selection count
+    function updateSelect2SelectionCount(selector) {
+      var select2Selection = $(selector).next('.select2-container').find('.select2-selection__rendered');
+      var selectedCount = $(selector).val() ? $(selector).val().length : 0;
+      if (selectedCount > 1) {
+        select2Selection.text(selectedCount + ' options selected');
+      } else if (selectedCount === 1) {
+        var selectedText = $(selector).find('option:selected').text();
+        select2Selection.text(selectedText);
+      } else {
+        select2Selection.text('Select an option');
+      }
+    }
+
+    // Call the update function initially for city select
+    updateSelect2SelectionCount('#city');
+  });
   </script>
 {% endblock %}
 {% block js %}
-<!-- Genratinfg itinerary n number of input base date selection-->
+
+{% comment %} Genratinfg itinerary n number of input base date selection {% endcomment %}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const startDateInput = document.getElementById('startDate');
@@ -316,12 +292,12 @@
       });
       document.getElementById('itineraryJson').value = JSON.stringify(data);
       jsdata = JSON.stringify(data);
-      alert(jsdata)
       conole.log(jsdata)
     });
   
   });
 </script>
+{% comment %} Genratinfg included n number of input base date selection {% endcomment %}
 <script>
   function addIncludedField() {
     const includedContainer = document.getElementById('includedContainer');
@@ -336,6 +312,7 @@
     fieldName.required = true;
   
     const deleteButton = document.createElement('button');
+    // if there is only one field than delete button is not added
     deleteButton.type = 'button';
     deleteButton.className = 'btn btn-danger delete-button';
     deleteButton.innerHTML = 'Delete';
@@ -370,8 +347,10 @@
       alert(includedJson);
       console.log(includedJson);
   }
+
+  window.onload = addIncludedField(); // updates
 </script>
-<!-- Calender Validation -->
+Calender Validation
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
@@ -381,3 +360,23 @@
   });
 </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+{% comment %} <script src="{% static 'js/new_tour.js' %}"></script> {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+

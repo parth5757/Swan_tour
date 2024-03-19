@@ -20,7 +20,7 @@ class TourType(BaseModel):
     def __str__(self) -> str:
         return str(self.name)
     
-    class Meta:
+    class Meta: 
         ordering = ('created_at',)
 
 class Tour(BaseModel):
@@ -37,7 +37,7 @@ class Tour(BaseModel):
     included = models.JSONField(default=dict)
     hotels = models.ManyToManyField(Hotel, related_name='hotels')
     buses = models.ManyToManyField(Bus, related_name='buss')
-    start_date = models.DateField(default=None)
+    start_date = models.DateField(default=None )
     end_date = models.DateField(default = None)
     tour_image = models.ImageField(upload_to='image/tour/', null=True, blank=True)
     image_2 = models.ImageField(upload_to='image/tour/', null=True, blank=True)
@@ -142,3 +142,9 @@ class TourHistoryVisit(BaseModel):
 class TourItinerary(BaseModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     itinerary = models.TextField(max_length=2000)
+
+
+class TourFacilitys(BaseModel):
+    facility = models.TextField(max_length=2000)
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='image/tour/facilitys')

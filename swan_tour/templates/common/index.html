@@ -133,36 +133,63 @@
             </div>
 
             <div class="row">
-                {% for tour in tours %}
-                <div class="col-lg-4 col-md-6 col-sm-12 col-12" >
-                    <div class="choose_desti_wrapper">
-                        <div class="choose_des_inner_wrap">
-                            <div class="choose_boxed_inner">
-                                <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
-                                <div class="choose_img_text">
-                                    <h2>{{tour.name}} | ₹{{tour.total_price}}</h2>
-                                    <h3>start from{{tour.start_date}} & end at{{tour.end_date}}</h3>
-                                </div>
-                            </div>
-                            <div class="flep_choose_box">
-                                <div class="flep_choose_box_inner">
-                                    <div class="rating_outof">
-                                        <h5>{{tour.rating}} Out of 5</h5>
+                {% if recent_tours %}
+                    {% for tour in recent_tours %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="choose_desti_wrapper">
+                            <div class="choose_des_inner_wrap">
+                                <div class="choose_boxed_inner">
+                                    <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
+                                    <div class="choose_img_text">
+                                        <h2>{{ tour.name }} | ₹{{ tour.total_price }}</h2>
+                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
                                     </div>
-
-                                    <h2> | ₹{{tour.total_price}}</h2>
-                                    <h3>start from{{tour.start_date}} & end at{{tour.end_date}}</h3>
-                                    <p>{{tour.overview}}</p>
-                                </a>
-                                    <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
+                                </div>
+                                <div class="flep_choose_box">
+                                    <div class="flep_choose_box_inner">
+                                        <div class="rating_outof">
+                                            <h5>{{ tour.rating }} Out of 5</h5>
+                                        </div>
+                                        <h2> | ₹{{ tour.total_price }}</h2>
+                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
+                                        <p>{{ tour.overview }}</p>
+                                        <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    {% for tour in tours %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                        <div class="choose_desti_wrapper">
+                            <div class="choose_des_inner_wrap">
+                                <div class="choose_boxed_inner">
+                                    <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
+                                    <div class="choose_img_text">
+                                        <h2>{{ tour.name }} | ₹{{ tour.total_price }}</h2>
+                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
+                                    </div>
+                                </div>
+                                <div class="flep_choose_box">
+                                    <div class="flep_choose_box_inner">
+                                        <div class="rating_outof">
+                                            <h5>{{ tour.rating }} Out of 5</h5>
+                                        </div>
+                                        <h2> | ₹{{ tour.total_price }}</h2>
+                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
+                                        <p>{{ tour.overview }}</p>
+                                        <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
             </div>
+            In this updated code:
         </div>
     </section>
 
@@ -502,30 +529,6 @@
         </div>
     </section>
 
-     <!-- Our partners Area -->
-     <section id="our_partners" class="section_padding_bottom">
-        <div class="container">
-            <!-- Section Heading -->
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="section_heading_center">
-                        <h2>Our partners</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="partner_slider_area owl-theme owl-carousel">
-                        {% for hotel in total_hotel  %}
-                            <div class="partner_logo">
-                                <a href="#!"> <img src="{{ hotel.hotel_image.url }}" alt="{{hotel.name}}"></a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer  -->
     {% include "footer.html" %}

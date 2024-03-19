@@ -14,7 +14,7 @@ from django.contrib.auth.views import LoginView
 from app.views import SuperUserView,BaseView
 from core.models import Place, City, State, Contact
 from hotel.models import Hotel
-from tour.models import Tour, TourType, TourBooking
+from tour.models import Tour, TourType, TourBooking, TourHistoryVisit
 from django.db.models import Count
 from bus.models import Bus
 from django_datatables_too.mixins import DataTableMixin
@@ -166,41 +166,89 @@ class UserView():
             messages.success(self.request, "city has been deleted successfully")
             return super().form_valid(form)
 
-    class Home(TemplateView):
+    # class Home(TemplateView):
 
-        # Create at Home View return home page 
+    #     # Create at Home View return home page 
+    #     template_name = 'common/index.html'
+    #     queryset = Hotel.objects.none()
+    #     def get_context_data(self, **kwargs):
+    #         context = super().get_context_data(**kwargs)
+
+    #         # return some of top trending packages (return last 5 tour book)
+    #         all_tour = TourType.objects.all()
+    #         tours = Tour.objects.order_by('-created_at')[:6]
+    #         # Retrive popula places
+    #         # popular_places = Place.objects.annotate(num_tour=Count('tour')).order_by('-num_tours')[:5]
+
+    #         total_place = Place.objects.all()
+    #         place_len = len(total_place)
+    #         popular_places = Place.objects.all()
+            
+    #         # recive top hotels
+    #         total_hotel = Hotel.objects.all()
+    #         hotel_len = len(total_hotel)
+    #         top_hotel = Hotel.objects.order_by('-rating')[:5]
+    #         # partners = total_hotel.hotel_image
+
+    #         # context['hot_tours'] = hot_tours
+
+    #         context['popular_places'] = popular_places
+    #         context['tours'] = tours
+    #         context['top_hotel'] = top_hotel
+    #         context['place_len'] = place_len
+    #         context['hotel_len'] = hotel_len
+    #         context['all_tour'] = all_tour
+
+    #         context['total_hotel'] = total_hotel
+    #         return context
+
+
+
+    class Home(TemplateView):
         template_name = 'common/index.html'
-        queryset = Hotel.objects.none()
+
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
 
-            # return some of top trending packages (return last 5 tour book)
-            all_tour = TourType.objects.all()
+            # Get top trending packages (last 6 tours)
             tours = Tour.objects.order_by('-created_at')[:6]
-            # Retrive popula places
-            # popular_places = Place.objects.annotate(num_tour=Count('tour')).order_by('-num_tours')[:5]
 
+            # Retrieve popular places
+            popular_places = Place.objects.all()  # You need to define Place model
+
+            # Retrieve top hotels
+            top_hotel = Hotel.objects.order_by('-rating')[:5]
+            
             total_place = Place.objects.all()
             place_len = len(total_place)
-            popular_places = Place.objects.all()
-            
-            # recive top hotels
             total_hotel = Hotel.objects.all()
             hotel_len = len(total_hotel)
-            top_hotel = Hotel.objects.order_by('-rating')[:5]
-            # partners = total_hotel.hotel_image
 
-            # context['hot_tours'] = hot_tours
+            # Check if the user is authenticated
+            if self.request.user.is_authenticated:
+                # Retrieve recent tour history for the authenticated user
+                recent_tours = TourHistoryVisit.objects.filter(user=self.request.user, visit=True).order_by('-date')[:2]
+                recent_tour_ids = [visit.tour.id for visit in recent_tours]
+
+                # Exclude recently visited tours from the main tour queryset
+                excluded_tours = Tour.objects.filter(id__in=recent_tour_ids)
+                remaining_tours_count = 6 - len(recent_tour_ids)
+                remaining_tours = Tour.objects.exclude(id__in=recent_tour_ids)[:remaining_tours_count]
+
+                # Concatenate both lists to display on the homepage
+                final_tours = list(excluded_tours) + list(remaining_tours)
+
+                context['recent_tours'] = final_tours
+            else:
+                # If user is not authenticated, show regular tours
+                context['tours'] = tours
 
             context['popular_places'] = popular_places
-            context['tours'] = tours
             context['top_hotel'] = top_hotel
-            context['place_len'] = place_len
             context['hotel_len'] = hotel_len
-            context['all_tour'] = all_tour
-
-            context['total_hotel'] = total_hotel
+            context['place_len'] = place_len
             return context
+
 
 class Profile(LoginRequiredMixin, TemplateView):
         template_name = 'users/my_profile.html'

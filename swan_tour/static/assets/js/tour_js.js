@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         reviewCheckboxes.forEach(function (checkbox) {
             selectedRatings.push(checkbox.value);
         });
-        
+
         var selectedTourTypes = [];
         var tourTypeCheckboxes = document.querySelectorAll('.tour-type-checkbox:checked');
         tourTypeCheckboxes.forEach(function (checkbox) {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             queryParams.push('ratings=' + selectedRatings.join(","));
         }
         if (selectedTourTypes.length > 0) {
-            queryParams.push('tour_types=' + selectedTourTypes.join(","));
+            queryParams.push('tour_type=' + selectedTourTypes.join(","));
         }
         if (searchName) {
             queryParams.push('search=' + encodeURIComponent(searchName));

@@ -1,0 +1,54 @@
+.js-example-basic-multiple{
+height: 20px;
+}
+.select2-container {
+width: 300px;
+margin-bottom: 10px;
+}
+
+.select2-container--default .select2-selection--multiple {
+border: 1px solid #ced4da;
+border-radius: 4px; 
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+list-style: none;
+padding: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+background-color: #007bff;
+color: #fff;
+border: 1px solid #ced4da;
+border-radius: 4px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+margin-right: 5px;
+color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+color: #fff;
+}
+.includedContainer { 
+position: relative; 
+display: inline-block; 
+}
+.includedContainer input { 
+padding-right: 40px; 
+}
+.includedContainer button { 
+position: absolute; 
+top: 0; 
+right: 0; 
+border: none; 
+background-color: transparent; 
+cursor: pointer; 
+}
+
+
