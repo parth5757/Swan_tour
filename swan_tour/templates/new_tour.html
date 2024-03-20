@@ -131,7 +131,7 @@
                     </div>
                     <input type="hidden" name="rating" value=0>
                     <input type="hidden" name="no_of_day" id="no_of_day" value="">
-                    <input type="hidden" id="itineraryJson" name="Itineraries" value="" required>
+                    <input type="hidden" id="itineraryJson" name="itineraries" value="" required>
                   </div>
                 </div>
               </div>
@@ -141,20 +141,14 @@
                     <div class="col-12">
                       <div class="form-input ">
                         <label class="lh-1 text-16 text-light-1">Tour Images</label>
-                        <input class="form-control form-control-lg" name="tour_image" multiple type="file">
+                        <input class="form-control form-control-lg" name="images" multiple type="file">
                       </div>
                     </div>
-                    <input type="hidden" id="includedJson" name="includeds" value="" required>
-                    <div id="inputContainer" class="form-input">
-                      <input type="text" class="form-control included-name" placeholder="Field Name" required="">
+                    <div class="col-12">
+                      <div class="form-input" id="inputContainer"></div>
                     </div>
-
-                    <!-- here add the included section where multiple fields are added with an "Add included option" button and deleted with a "Delete" button -->
-                    
-                    <div id="includedContainer" class="form-input"></div>
-                    <label class="button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="addIncludedField()">Add included option</label>
                   <div class="d-inline-block pt-30">
-                    <button  class=" button h-50 px-24 -dark-1 bg-blue-1 text-white" onclick="saveIncludedFields()">
+                    <button  class=" button h-50 px-24 -dark-1 bg-blue-1 text-white">
                       Save Changes
                     </button>
                   </div>
@@ -251,7 +245,6 @@
 {% endblock %}
 {% block js %}
 
-{% comment %} Genratinfg itinerary n number of input base date selection {% endcomment %}
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const startDateInput = document.getElementById('startDate');
@@ -285,6 +278,7 @@
     endDateInput.addEventListener('change', createInputs);
   
     document.getElementById('new_tour_form').addEventListener('submit', function(event) {
+      alert("hello")
       const inputs = inputContainer.querySelectorAll('input');
       const data = {};
       inputs.forEach(input => {
@@ -293,64 +287,11 @@
       document.getElementById('itineraryJson').value = JSON.stringify(data);
       jsdata = JSON.stringify(data);
       conole.log(jsdata)
+      alert(jsdata)
+      conole.log(jsdata)
     });
-  
   });
 </script>
-{% comment %} Genratinfg included n number of input base date selection {% endcomment %}
-<script>
-  function addIncludedField() {
-    const includedContainer = document.getElementById('includedContainer');
-  
-    const newField = document.createElement('div');
-    newField.className = 'row x-gap-20 y-gap-20 included-field';
-  
-    const fieldName = document.createElement('input');
-    fieldName.type = 'text';
-    fieldName.className = 'form-control included-name';
-    fieldName.placeholder = 'Field Name';
-    fieldName.required = true;
-  
-    const deleteButton = document.createElement('button');
-    // if there is only one field than delete button is not added
-    deleteButton.type = 'button';
-    deleteButton.className = 'btn btn-danger delete-button';
-    deleteButton.innerHTML = 'Delete';
-    deleteButton.addEventListener('click', function() {
-      includedContainer.removeChild(newField);
-      updateIncludedJson();
-    });
-  
-    newField.appendChild(fieldName);
-    newField.appendChild(deleteButton);
-  
-    includedContainer.appendChild(newField);
-    includedFields.push(newField);
-    updateIncludedJson();
-  }
-
-  // Function to update the hidden input "includedJson" with the current included fields in JSON format
-  function updateIncludedJson() {
-      const includedData = {};
-      includedFields.forEach((field, index) => {
-          const fieldName = field.querySelector('.included-name').value;
-          includedData[index + 1] = fieldName;
-      });
-
-      document.getElementById('includedJson').value = JSON.stringify(includedData);
-  }
-
-  // Function to save included fields when "Save Changes" is clicked
-  function saveIncludedFields() {
-      updateIncludedJson();
-      const includedJson = document.getElementById('includedJson').value;
-      alert(includedJson);
-      console.log(includedJson);
-  }
-
-  window.onload = addIncludedField(); // updates
-</script>
-Calender Validation
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format

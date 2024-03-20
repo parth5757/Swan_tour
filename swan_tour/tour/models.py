@@ -34,7 +34,6 @@ class Tour(BaseModel):
     overview = models.TextField(max_length=2000)
     no_of_day = models.IntegerField(default=0)
     itineraries = models.JSONField(default=dict)
-    included = models.JSONField(default=dict)
     hotels = models.ManyToManyField(Hotel, related_name='hotels')
     buses = models.ManyToManyField(Bus, related_name='buss')
     start_date = models.DateField(default=None )
@@ -125,7 +124,8 @@ class TourImage(BaseModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='image/tour/image')
 
-
+    def __str__(self)-> str:
+        return str(self.tour.name)
 class TourHistoryVisit(BaseModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

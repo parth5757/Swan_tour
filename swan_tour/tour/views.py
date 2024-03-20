@@ -24,6 +24,7 @@ import datetime
 from django.db.models import Q
 from django.utils import timezone
 from django.forms.models import inlineformset_factory
+from .tasks import test_func
 import folium
 # Create your views here.
 
@@ -36,7 +37,7 @@ class TourListView(SuperUserView, ListView):
 class TourCreateView(SuperUserView, CreateView):
     model = Tour
     template_name = 'new_tour.html'
-    fields = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'included', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
+    form_class = TourForm
     success_url = reverse_lazy('db_tour_list')
 
     def get_context_data(self, **kwargs):
@@ -78,6 +79,7 @@ class TourDeleteView(BaseView, SuperUserView, DeleteView):
         return super().form_valid(form)
 
 # user side tour list with search
+
 
 class TourUserListView(ListView):
     model = Tour
@@ -135,7 +137,6 @@ class TourUserListView(ListView):
 
         paginator = Paginator(tour_list, self.paginate_by)
         page = self.request.GET.get('page')
-
         try:
             tours = paginator.page(page)
         except PageNotAnInteger:
@@ -158,6 +159,7 @@ class TourUserListView(ListView):
         context['search_name'] = self.request.GET.get('searh', '')
 
         return context
+
 
 class TourDetailView(DetailView):
     model = Tour
@@ -198,8 +200,6 @@ class TourDetailView(DetailView):
         #     i.hotel_image
 
 
-
-
 class TourBookingSessionView(BaseView, View):
     def post(self, request, *args, **kwargs):
         # Assuming form data contains 'tour_id' and 'no_of_people_booking'
@@ -214,8 +214,55 @@ class TourBookingSessionView(BaseView, View):
         # Redirect to the tour booking page
         return redirect(reverse('tour_booking'))
     
-# # Single extra form inline form factory
-# class TourBookingCreateView(BaseView, CreateView):
+# Single extra form inline form factory
+class TourBookingCreateView(BaseView, CreateView):
+    model = TourBooking
+    template_name = 'tour/tour_booking.html'
+    form_class = TourBookingForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tour_id = self.request.session.get('tour_id')
+        tour = get_object_or_404(Tour, id=tour_id)
+        TourBookingNameFormSet = inlineformset_factory(TourBooking, TourBookingName, form=TourBookingNameForm, extra=1)
+        if self.request.method == 'POST':
+            form = self.form_class(self.request.POST)
+            formset = TourBookingNameFormSet(self.request.POST)
+        else:
+            form = self.form_class()
+            formset = TourBookingNameFormSet()
+        context['form'] = form
+        context['formset'] = formset
+        context['tour'] = tour
+        context['no_of_people_booking'] = self.request.session.get('no_of_people_booking')
+        context['available_group_size'] = tour.get_available_group_size()
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.tour = context['tour']
+            self.object.save()
+            formset.instance = self.object
+            formset.save()
+            return super().form_valid(form)
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def form_invalid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        for error in form.errors:
+            print("==> error:", error)
+
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
+
+# class TourBookingCreateView(CreateView):
 #     model = TourBooking
 #     template_name = 'tour/tour_booking.html'
 #     form_class = TourBookingForm
@@ -225,13 +272,12 @@ class TourBookingSessionView(BaseView, View):
 #         context = super().get_context_data(**kwargs)
 #         tour_id = self.request.session.get('tour_id')
 #         tour = get_object_or_404(Tour, id=tour_id)
-#         TourBookingNameFormSet = inlineformset_factory(TourBooking, TourBookingName, form=TourBookingNameForm, extra=1)
-#         if self.request.method == 'POST':
-#             form = self.form_class(self.request.POST)
-#             formset = TourBookingNameFormSet(self.request.POST)
-#         else:
-#             form = self.form_class()
-#             formset = TourBookingNameFormSet()
+#         TourBookingNameFormSet = inlineformset_factory(TourBooking, TourBookingName, form=TourBookingNameForm, extra=1, can_delete=True, can_delete_extra=True)
+
+#         # Initialize form and formset with empty data
+#         form = self.form_class()
+#         formset = TourBookingNameFormSet()
+
 #         context['form'] = form
 #         context['formset'] = formset
 #         context['tour'] = tour
@@ -242,12 +288,15 @@ class TourBookingSessionView(BaseView, View):
 #     def form_valid(self, form):
 #         context = self.get_context_data()
 #         formset = context['formset']
+
 #         if form.is_valid() and formset.is_valid():
 #             self.object = form.save(commit=False)
 #             self.object.tour = context['tour']
 #             self.object.save()
+
 #             formset.instance = self.object
 #             formset.save()
+
 #             return super().form_valid(form)
 #         else:
 #             return self.render_to_response(self.get_context_data(form=form, formset=formset))
@@ -259,54 +308,6 @@ class TourBookingSessionView(BaseView, View):
 #             print("==> error:", error)
 
 #         return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
-# n number of extra form inline form factory & also no extra peole not working
-class TourBookingCreateView(CreateView):
-    model = TourBooking
-    template_name = 'tour/tour_booking.html'
-    form_class = TourBookingForm
-    success_url = reverse_lazy('home')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        tour_id = self.request.session.get('tour_id')
-        tour = get_object_or_404(Tour, id=tour_id)
-        TourBookingNameFormSet = inlineformset_factory(TourBooking, TourBookingName, form=TourBookingNameForm, extra=1)
-
-        # Initialize form and formset with empty data
-        form = self.form_class()
-        formset = TourBookingNameFormSet()
-
-        context['form'] = form
-        context['formset'] = formset
-        context['tour'] = tour
-        context['no_of_people_booking'] = self.request.session.get('no_of_people_booking')
-        context['available_group_size'] = tour.get_available_group_size()
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-
-        if form.is_valid() and formset.is_valid():
-            self.object = form.save(commit=False)
-            self.object.tour = context['tour']
-            self.object.save()
-
-            formset.instance = self.object
-            formset.save()
-
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
-    def form_invalid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        for error in form.errors:
-            print("==> error:", error)
-
-        return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
 # api for getting search name of city & place
@@ -332,6 +333,11 @@ def get_name(request):
         'data': payload
     })
 
+
+# django celery test
+def test(request):
+    test_func.deleay()
+    return HttpResponse("Done")
 
 
 
@@ -381,3 +387,7 @@ class FoliumView(TemplateView):
     #     return render(request, 'polls/show_folium_map.html', context)
 
 
+
+
+# to run celery we have 
+# celery -A swan_tour.celery worker -l info

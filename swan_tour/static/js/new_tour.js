@@ -87,8 +87,6 @@ document.getElementById('new_tour_form').addEventListener('submit', function(eve
     // this.submit();
 });
 
-// Initialize included fields
-addIncludedField();
 
 // Calendar validation
 const today = new Date().toISOString().split('T')[0];

@@ -1,10 +1,11 @@
 from django import forms
 from .models import Tour, TourReview, TourBooking, TourBookingName, TourImage
+from django.forms import inlineformset_factory
 
 class TourForm(forms.ModelForm):
     class Meta:
         model  = Tour
-        fields = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'included', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
+        fields = ['name', 'tour_type', 'group_size', 'city', 'place', 'map_link', 'rating', 'overview', 'no_of_day', 'itineraries', 'hotels', 'buses', 'start_date', 'end_date', 'total_price']
         # fields = '__all__'
 
 
@@ -23,7 +24,9 @@ class TourBookingForm(forms.ModelForm):
     class Meta:
         model = TourBooking
         fields = ['user', 'tour', 'email', 'phone_number', 'first_name', 'last_name', 'start_date', 'end_date', 'no_of_people_booking', 'total_price']
-
+        widgets = {
+            
+        }
 
 class TourBookingNameForm(forms.ModelForm):
     class Meta:
@@ -35,6 +38,11 @@ class TourBookingNameForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control bg_input'}),
             
         }
+
+
+TourBookingNameFormSet = inlineformset_factory
+
+
 
 
 class TourReviewForm(forms.ModelForm):

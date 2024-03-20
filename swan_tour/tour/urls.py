@@ -19,6 +19,6 @@ urlpatterns = [
     path('tour_booking/', TourBookingCreateView.as_view(), name='tour_booking'),
     path('<str:undefined_route>/', ErrorView.as_view(), name='error'),
     path('map', FoliumView.as_view(), name='map'),
-
+    path('test', views.test_func, name="test")
 
 ] + static(settings.MEDIA_ROOT, document_root=settings.MEDIA_ROOT)
