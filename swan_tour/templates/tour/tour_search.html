@@ -89,7 +89,7 @@
                                 <h5>Search by name</h5>
                             </div>
                             <div class="name_search_form">
-                                <input type="text" class="form-control" id="search-name" placeholder="Enter tour name" value="">
+                                <input type="text" class="form-control" id="search-name" placeholder="Enter tour name" value="{{ search_name }}">
                                 <button class="apply-search apply" type="button">Apply</button>   
                             </div>
                         </div>
@@ -131,8 +131,8 @@
                                             <i class="fas fa-star color_asse"></i>
                                         </label>
                                     </div>
-                                    <div class="form-check" {% if '3' in ratings %} checked {% endif %}>
-                                        <input class="form-check-input review-checkbox" type="checkbox" value="3" id="five-star">
+                                    <div class="form-check" >
+                                        <input class="form-check-input review-checkbox" type="checkbox" value="3" id="five-star" {% if '3' in ratings %} checked {% endif %}>
                                         <label class="form-check-label" for="three-star">
                                             <i class="fas fa-star color_theme"></i>
                                             <i class="fas fa-star color_theme"></i>
@@ -173,13 +173,13 @@
                             <div class="tour_search_type">
                                 {% for tour_type in tour_types %}
                                     <div class="form-check">
-                                        <input class="form-check-input tour-type-checkbox" type="checkbox" value="{{tour_type.id}}" id="tourType{{tour_type.id}}" {% if tour_type.id in tour_types %} checked {% endif %} >
+                                        <input class="form-check-input tour-type-checkbox" type="checkbox" value="{{tour_type.id}}" id="tourType{{tour_type.id}}" {% if tour_type.id in tourtype %} checked {% endif %} >
                                         <label class="form-check-label " for="tourType{{tour_type.id}}">
                                             <span class="area_flex_one">
                                                 <span>{{ tour_type.name }}</span>
                                             </span>
                                         </label>
-                                    </div>
+                                    </div>  
                                 {% endfor %}
                             </div>
                             <button class="apply-tour-type apply" type="button">Apply</button>

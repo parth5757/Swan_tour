@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
             queryParams.push('ratings=' + selectedRatings.join(","));
         }
         if (selectedTourTypes.length > 0) {
-            queryParams.push('tour_type=' + selectedTourTypes.join(","));
+            queryParams.push('tourtype=' + selectedTourTypes.join(","));
         }
         if (searchName) {
             queryParams.push('search=' + encodeURIComponent(searchName));

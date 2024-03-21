@@ -285,10 +285,11 @@ class Contact (CreateView):
     template_name = "common/contact.html"
     # form = ContactForm
     fields = "__all__"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('send_contact_mail')
     
     def form_valid(self, form):
         form.save()
+        
         return super().form_valid(form)
     
             # to check error

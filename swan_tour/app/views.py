@@ -21,3 +21,4 @@ class SuperUserView(LoginRequiredMixin):
 class ErrorView(View):
     def get(self, request, undefined_route):
         return render(request, 'error.html')
+    

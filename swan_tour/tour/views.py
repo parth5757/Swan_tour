@@ -24,7 +24,7 @@ import datetime
 from django.db.models import Q
 from django.utils import timezone
 from django.forms.models import inlineformset_factory
-from .tasks import test_func
+from .tasks import test_func, send_contact_func
 import folium
 # Create your views here.
 
@@ -122,13 +122,7 @@ class TourUserListView(ListView):
             #  queryset = queryset.filter(city__name__icontains=destination)
             queryset = queryset.filter(Q(city__name__icontains=destination) | Q(place__name__icontains=destination)).distinct()
 
-
-
         return queryset
-
-    # city = City.objects.filter(name__contains=query)
-
-    # place = Place.objects.filter(name__contains=query)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,6 +139,10 @@ class TourUserListView(ListView):
             tours = paginator.page(paginator.num_pages)
         tour_types = TourType.objects.all()
 
+        tourtype = self.request.GET.get('tourtype', '')
+        if tourtype:
+            tourtype = [int(id) for id in tourtype.split(',')]
+
         # Pass additional data to the template if needed
         context['search_destination'] = self.request.GET.get('destination', '')
         context['search_start_date'] = self.request.GET.get('start_date', '')
@@ -155,8 +153,10 @@ class TourUserListView(ListView):
         context['tour_count'] = tour_count
         # return all details of t
         context['tours'] = tours
+        context['tourtype'] = tourtype
+
         context['ratings'] = self.request.GET.get('ratings', '')
-        context['search_name'] = self.request.GET.get('searh', '')
+        context['search_name'] = self.request.GET.get('search', '')
 
         return context
 
@@ -336,11 +336,14 @@ def get_name(request):
 
 # django celery test
 def test(request):
-    test_func.deleay()
+    test_func.delay()
     return HttpResponse("Done")
 
-
-
+def send_contact_response(request):
+    send_contact_func.delay()
+    return redirect(reverse_lazy('home'))
+# render to string
+# stripe tag     html format mail
 
 # Not Working Folium Map inplace that leaft js working
 class FoliumView(TemplateView):
