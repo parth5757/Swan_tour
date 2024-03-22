@@ -132,7 +132,14 @@
                         <div class="tour_details_img_wrapper">
                             <div class="slider slider-for">
                                 <div>
-                                    <img class="imgs_up" src="{{ tour.tour_image.url }}" alt="img">
+                                    {% if tour.tourimage_set.all %}
+                                    {% with tour.tourimage_set.last as last_image %}
+                                    <img class="imgs_up" src="{{ last_image.image.url }}" alt="img">
+                                    {% endwith %}
+                                    {% else %}
+                                    <img class="imgs_up" src="{{ last_image.image.url }}" alt="imagenot found">
+                                    {% endif %}
+                                    
                                 </div>
                                 <div>
                                     <img class="imgs_up" src="{{ tour.image_2.url }}" alt="img">

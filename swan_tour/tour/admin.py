@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tour, TourType, TourBooking, TourReview, TourImage, TourHistoryVisit, TourBookingName, TourFacilitys
+from .models import Tour, TourType, TourBooking, TourReview, TourImage, TourHistoryVisit, TourBookingName, TourFacility, TourVehicle, TourRepeatOption
 
 # Register your models here.
 
@@ -13,4 +13,6 @@ admin.site.register(TourBooking)
 admin.site.register(TourImage)
 admin.site.register(TourHistoryVisit)
 admin.site.register(TourBookingName)
-admin.site.register(TourFacilitys)
+admin.site.register(TourFacility)
+admin.site.register(TourVehicle)
+admin.site.register(TourRepeatOption)

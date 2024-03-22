@@ -78,9 +78,6 @@ class TourDeleteView(BaseView, SuperUserView, DeleteView):
         messages.success(self.request, "Tour deleted successfully!!")
         return super().form_valid(form)
 
-# user side tour list with search
-
-
 class TourUserListView(ListView):
     model = Tour
     context_object_name = 'tours'
@@ -160,7 +157,6 @@ class TourUserListView(ListView):
 
         return context
 
-
 class TourDetailView(DetailView):
     model = Tour
     template_name = 'tour/tour_detail.html'
@@ -198,7 +194,6 @@ class TourDetailView(DetailView):
         # for i in tour.hotels.all():
         #     print(i.hotel_image)
         #     i.hotel_image
-
 
 class TourBookingSessionView(BaseView, View):
     def post(self, request, *args, **kwargs):
@@ -335,9 +330,6 @@ def get_name(request):
 
 
 # django celery test
-def test(request):
-    test_func.delay()
-    return HttpResponse("Done")
 
 def send_contact_response(request):
     send_contact_func.delay()
@@ -390,7 +382,36 @@ class FoliumView(TemplateView):
     #     return render(request, 'polls/show_folium_map.html', context)
 
 
+class RepeatTourCreateView(SuperUserView, CreateView):
+    model = Tour
+    template_name = 'new_repeat_tour.html'
+    form_class = TourForm
+    success_url = reverse_lazy('db_tour_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tourtypes'] = TourType.objects.all()
+        print(context['tourtypes'])
+        context['cities'] = City.objects.all()
+        context['places'] = Place.objects.all()
+        context['hotels'] = Hotel.objects.all()
+        context['buses'] = Bus.objects.all()
+        return context
+    
+    def form_valid(self, form):
+        form.instance.manager = self.request.user
+        tour = form.save()
 
-# to run celery we have 
-# celery -A swan_tour.celery worker -l info
+        # save multiple images for tour
+        images = self.request.FILES.getlist('images')
+        for image in images:
+            TourImage.objects.create(tour=tour, image=image)
+        messages.success(self.request, "The tour was created successfully.")
+        return super().form_valid(form)
+
+    # to check error
+    def form_invalid(self, form):
+        print(form)
+        for error in form.errors:
+            print("==> error:", error)
+        return super().form_invalid(form)

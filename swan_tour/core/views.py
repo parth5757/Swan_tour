@@ -14,7 +14,7 @@ from django.contrib.auth.views import LoginView
 from app.views import SuperUserView,BaseView
 from core.models import Place, City, State, Contact
 from hotel.models import Hotel
-from tour.models import Tour, TourType, TourBooking, TourHistoryVisit
+from tour.models import Tour, TourType, TourBooking, TourHistoryVisit, TourImage
 from django.db.models import Count
 from bus.models import Bus
 from django_datatables_too.mixins import DataTableMixin
@@ -218,7 +218,6 @@ class UserView():
 
             # Retrieve top hotels
             top_hotel = Hotel.objects.order_by('-rating')[:5]
-            
             total_place = Place.objects.all()
             place_len = len(total_place)
             total_hotel = Hotel.objects.all()
@@ -278,7 +277,17 @@ class Dashboard(SuperUserView, BaseView, TemplateView):
     
 class About(TemplateView):
     template_name = "common/about.html"
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_number_place = Place.objects.count()
+        total_number_hotel = Hotel.objects.count()
+        total_number_tour = Tour.objects.count()
+        total_number_booking = TourBooking.objects.count()
+        context['total_number_place'] = total_number_place
+        context['total_number_hotel'] = total_number_hotel
+        context['total_number_tour'] = total_number_tour
+        context['total_number_booking'] = total_number_booking
+        return context
 
 class Contact (CreateView):
     model = Contact
@@ -297,6 +306,3 @@ class Contact (CreateView):
         for error in form.errors:
             print("==> error:", error)
         return super().form_invalid(form)
-    
-
-

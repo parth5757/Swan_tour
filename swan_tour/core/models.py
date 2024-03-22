@@ -45,7 +45,7 @@ class City(BaseModel):
 class Place(BaseModel):
     '''the places this only add by superadmin'''
     name = models.CharField(max_length=100)
-    description = models.TextField(max_length=100)
+    description = models.TextField(max_length=1000)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='image/places')
 

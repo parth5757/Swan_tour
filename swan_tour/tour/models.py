@@ -23,10 +23,31 @@ class TourType(BaseModel):
     class Meta:
         ordering = ('created_at',)
 
+class TourFacility(BaseModel):
+    facility = models.CharField(max_length=2000)
+    image = models.ImageField(upload_to='image/tour/facility')
+    def __str__(self) -> str:
+        return str(self.facility)
+    
+    class Meta:
+        ordering = ('-created_at',)
+
+class TourVehicle(BaseModel):
+    vehicle = models.CharField(max_length=2000)
+    capacity = models.IntegerField()
+    image = models.ImageField(upload_to='image/tour/vehicle')  
+
+
+    def __str__(self) -> str:
+        return str(self.vehicle)
+    
+    class Meta:
+        ordering = ('created_at',)
+
 class Tour(BaseModel):
     name = models.CharField(max_length=200)
     tour_type = models.ForeignKey(TourType, on_delete=models.CASCADE, related_name='type')
-    group_size = models.IntegerField()
+    group_size = models.IntegerField(null=True, blank=True)
     city = models.ManyToManyField(City, related_name='citys')
     place = models.ManyToManyField(Place, related_name='places')
     map_link = models.URLField(max_length=500)
@@ -34,10 +55,13 @@ class Tour(BaseModel):
     overview = models.TextField(max_length=2000)
     no_of_day = models.IntegerField(default=0)
     itineraries = models.JSONField(default=dict)
+    total_people = models.IntegerField(default=0, null=True, blank=True) # new added for custom tour people limit in place of group size
+    tour_vehicle = models.ForeignKey(TourVehicle , on_delete=models.CASCADE, related_name='tour_vehicle', null=True, blank=True)
+    tour_facility = models.ManyToManyField(TourFacility, related_name='facilitys')
     hotels = models.ManyToManyField(Hotel, related_name='hotels')
     buses = models.ManyToManyField(Bus, related_name='buss')
-    start_date = models.DateField(default=None )
-    end_date = models.DateField(default = None)
+    start_date = models.DateField(default=None, null=True, blank=True)
+    end_date = models.DateField(default = None, null=True, blank=True)
     tour_image = models.ImageField(upload_to='image/tour/', null=True, blank=True)
     image_2 = models.ImageField(upload_to='image/tour/', null=True, blank=True)
     image_3 = models.ImageField(upload_to='image/tour/', null=True, blank=True)
@@ -68,6 +92,12 @@ class Tour(BaseModel):
         return str(self.name)
     class Meta:
         ordering = ('created_at',)
+
+
+class TourRepeatOption(BaseModel):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
 
 class TourReview(BaseModel):
 
@@ -126,6 +156,9 @@ class TourImage(BaseModel):
 
     def __str__(self)-> str:
         return str(self.tour.name)
+
+    class Meta:
+        ordering = ('created_at',)
 class TourHistoryVisit(BaseModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -142,9 +175,3 @@ class TourHistoryVisit(BaseModel):
 class TourItinerary(BaseModel):
     tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
     itinerary = models.TextField(max_length=2000)
-
-
-class TourFacilitys(BaseModel):
-    facility = models.TextField(max_length=2000)
-    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='image/tour/facilitys')

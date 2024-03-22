@@ -194,8 +194,13 @@
                                 <!-- <div class="heart_destinations">
                                     <i class="fas fa-heart"></i>
                                 </div> -->
-                                <a href="{% url 'tour_detail' slug=tour.tour_slug %}"><img class="tour-image" src="{{ tour.tour_image.url }}"
-                                        alt="img"></a>
+                                {% if tour.tourimage_set.all %}
+                                {% with tour.tourimage_set.last as last_image %}
+                                <a href="{% url 'tour_detail' slug=tour.tour_slug %}"><img class="tour-image" src="{{ last_image.image.url }}" alt="img"></a>
+                                {% endwith %}
+                                {% else %}
+                                <a href="{% url 'tour_detail' slug=tour.tour_slug %}"><img class="tour-image" src="{{ last_image.image.url }}"alt="img"></a>
+                                {% endif %}
                                 <div class="top_destinations_box_content">
                                     <h4><a href="{% url 'tour_detail' slug=tour.tour_slug %}">{{ tour.name }}</a></h4>
                                     <p><span class="review_rating">{{ tour.rating }}/5 star</span> 

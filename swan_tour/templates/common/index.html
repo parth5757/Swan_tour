@@ -139,7 +139,13 @@
                         <div class="choose_desti_wrapper">
                             <div class="choose_des_inner_wrap">
                                 <div class="choose_boxed_inner">
-                                    <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
+                                    {% if tour.tourimage_set.all %}
+                                    {% with tour.tourimage_set.last as last_image %}
+                                    <img src="{{ last_image.image.url }}" id="tour-card" alt="img">
+                                    {% endwith %}
+                                    {% else %}
+                                    <img src="{{ last_image.image.url }}" id="tour-card" alt="imagenot found">
+                                    {% endif %}
                                     <div class="choose_img_text">
                                         <h2>{{ tour.name }} | ₹{{ tour.total_price }}</h2>
                                         <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
@@ -161,32 +167,40 @@
                     </div>
                     {% endfor %}
                 {% else %}
-                    {% for tour in tours %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-                        <div class="choose_desti_wrapper">
-                            <div class="choose_des_inner_wrap">
-                                <div class="choose_boxed_inner">
-                                    <img src="{{ tour.tour_image.url }}" id="tour-card" alt="img">
-                                    <div class="choose_img_text">
-                                        <h2>{{ tour.name }} | ₹{{ tour.total_price }}</h2>
-                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
-                                    </div>
+                {% for tour in tours %}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="choose_desti_wrapper">
+                        <div class="choose_des_inner_wrap">
+                            <div class="choose_boxed_inner">
+                                {% if tour.tourimage_set.all %}
+                                
+                                {% with tour.tourimage_set.last as last_image %}
+                                
+                                <img src="{{ last_image.image.url }}" id="tour-card" alt="img">
+                                {% endwith %}
+                                {% else %}
+                                <img src="{{ last_image.image.url }}" id="tour-card" alt="imagenot found">
+                                {% endif %}
+                                <div class="choose_img_text">
+                                    <h2>{{ tour.name }} | ₹{{ tour.total_price }}</h2>
+                                    <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
                                 </div>
-                                <div class="flep_choose_box">
-                                    <div class="flep_choose_box_inner">
-                                        <div class="rating_outof">
-                                            <h5>{{ tour.rating }} Out of 5</h5>
-                                        </div>
-                                        <h2> | ₹{{ tour.total_price }}</h2>
-                                        <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
-                                        <p>{{ tour.overview }}</p>
-                                        <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
+                            </div>
+                            <div class="flep_choose_box">
+                                <div class="flep_choose_box_inner">
+                                    <div class="rating_outof">
+                                        <h5>{{ tour.rating }} Out of 5</h5>
                                     </div>
+                                    <h2> | ₹{{ tour.total_price }}</h2>
+                                    <h3>Starts from {{ tour.start_date }} & ends at {{ tour.end_date }}</h3>
+                                    <p>{{ tour.overview }}</p>
+                                    <a href="{% url 'tour_detail' slug=tour.tour_slug %}">Tour details</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {% endfor %}
+                </div>
+                {% endfor %}
                 {% endif %}
             </div>
             In this updated code:
@@ -528,14 +542,8 @@
             </div>
         </div>
     </section>
-
-
     <!-- Footer  -->
     {% include "footer.html" %}
-
     {% include "js.html" %}
 </body>
-
-
-<!-- Mirrored from andit.co/projects/html/and-tour/demo/index-3.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 Feb 2024 10:46:23 GMT -->
 </html>
