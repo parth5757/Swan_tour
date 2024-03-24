@@ -43,5 +43,6 @@ urlpatterns = [
     # city urls
     path('add_city/', UserView.AddCity.as_view(), name='add_city'),
     path('city/', UserView.City.as_view(),name="city"),
+    path('city/list/json', UserView.CityListJson.as_view(), name='city_list_json'),
     path('delete_city/<int:pk>', UserView.CityDeleteView.as_view(), name='city_delete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT   )

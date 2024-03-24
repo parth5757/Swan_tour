@@ -156,6 +156,26 @@ class UserView():
         context_object_name = 'city'
         template_name = 'admin/city.html'
 
+    class CityListJson(BaseDatatableView):
+        model = City
+        columns = ['id', 'name','state']
+        order_columns = ['id', 'name','state']
+
+        def render_column(self, row, column):
+            # We want to render the city name instead of its ID
+            if column =='state':
+                return row.state.name
+            else:
+                return super().render_column(row, column)
+
+        def filter_queryset(self, qs):
+            search_value = self.request.GET.get('search[value]', None)
+            if search_value:
+                qs = qs.filter(name_icontains=search_value) | qs.filter(state__name__icontains=search_value)
+            return qs
+
+        def get_initial_queryset(self):
+            return City.objects.all()
 
     class CityDeleteView(SuperUserView, DeleteView):
         model = City

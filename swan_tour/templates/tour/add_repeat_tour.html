@@ -13,7 +13,7 @@
   <div class="dashboard__content">
     <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
       <div class="col-auto">
-        <h1 class="text-30 lh-14 fw-600">Add Tour</h1>
+        <h1 class="text-30 lh-14 fw-600">Add Custom Tour</h1>
         <div class="text-15 text-light-1">Let's add a new tour to make Swan Tour bigger.</div>
       </div>
       <div class="col-auto"></div>
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="tabs__content pt-30 js-tabs-content">
-          <form action="{% url 'new_tour' %}" id="new_tour_form" method="post" enctype="multipart/form-data">
+          <form action="{% url 'add_repeat_tour' %}" id="new_tour_form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="tabs__pane -tab-item-1 is-tab-el-active">
               <div class="col-xl-10">
@@ -57,8 +57,8 @@
                   </div>
                   <div class="col-6">
                     <div class="form-input ">
-                      <label class="lh-1 text-16 text-light-1">Group size</label>
-                      <input type="number" name="group_size" required>
+                      <label class="lh-1 text-16 text-light-1">Total Nmber of Day Tour</label>
+                      <input type="number" id="totalDay" max=14 name="no_of_day" required>
                     </div>
                   </div>
                   <div class="col-6">
@@ -83,12 +83,6 @@
                   </div>
                   <div class="col-6">
                     <div class="form-input ">
-                      <label class="lh-1 text-16 text-light-1">Map link</label>
-                      <input type="url" name="map_link" required>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="form-input ">
                       <label class="lh-1 text-16 text-light-1">Overview</label>
                       <textarea name="overview" required></textarea>
                     </div>
@@ -103,29 +97,29 @@
                   </div>
                   <div class="col-6">
                     <div class="form-input ">
-                      <label class="form-control form-select bg_input" class="lh-1 text-16 text-light-1">Buses</label>
+                      <label class="form-control form-select bg_input" class="lh-1 text-16 text-light-1">Vehicle</label>
                       <select class="form-control form-select bg_input js-example-basic-multiple" name="buses" id="bus"   required>
-                        {% for bus in buses %}
-                        <option value="{{bus.id}}">{{bus.name}}</option>
+                        {% for vehicle in vehicles %}
+                        <option value="{{vehicle.id}}">{{vehicle.vehicle}}</option>
                         {% endfor %}
                       </select>
                     </div>
                   </div>
                   <div class="col-6">
-                    <div class="form-input">
-                      <label class="lh-1 text-16 text-light-1">Total Number Of Day</label>
-                      <input type="number" name="no_of_day" id="no_of_day">
+                    <div class="form-input ">
+                      <label class="lh-1 text-16 text-light-1">Map link</label>
+                      <input type="url" name="map_link" required>
                     </div>
                   </div>
                   <div class="col-6">
-                    <div class="form-input ">
-                      <label class="lh-1 text-16 text-light-1">Total Price</label>
+                    <div class="form-input">
+                      <label class="lh-1 text-16 text-light-1">Total ptice</label>
                       <input type="number" name="total_price" required>
                     </div>
                   </div>
                   <input type="hidden" name="rating" value=0>
-                  <input type="hidden" id="itineraryJson" name="itineraries" value="" required>
                 </div>
+                {% comment %} <label class="button h-50 px-24 -dark-1 bg-blue-1 text-white" id="nextButton">Next Page</label> {% endcomment %}
               </div>
             </div>
             <div class="tabs__pane -tab-item-2">
@@ -140,8 +134,9 @@
                   <div class="col-12">
                     <div class="form-input" id="inputContainer"></div>
                   </div>
+                  <input type="hidden" id="itineraryJson" name="itineraries" value="" required>
                 <div class="d-inline-block pt-30">
-                  <button  class=" button h-50 px-24 -dark-1 bg-blue-1 text-white">
+                  <button  class="button h-50 px-24 -dark-1 bg-blue-1 text-white">
                     Save Changes
                   </button>
                 </div>
@@ -239,58 +234,40 @@ $(document).ready(function() {
 {% block js %}
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const startDateInput = document.getElementById('startDate');
-  const endDateInput = document.getElementById('endDate');
-  const inputContainer = document.getElementById('inputContainer');
-  
-
-  function createInputs() {
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
-    const diffDays = Math.round(Math.abs((endDate - startDate) / oneDayInMilliseconds));
-
-    function no_of_day() {
-      document.getElementById('no_of_day').value = diffDays + 1;
+  document.addEventListener("DOMContentLoaded", function() {
+    const totalDayInput = document.getElementById('totalDay');
+    const inputContainer = document.getElementById('inputContainer');
+     
+    function createInputs() {
+       // Use totalDayInput.value to get the number of days
+       const totalDay = parseInt(totalDayInput.value, 10);
+   
+       inputContainer.innerHTML = '';
+       for (let i = 0; i < totalDay; i++) {
+         const input = document.createElement('input');
+         input.type = 'text';
+         input.name = `day_${i + 1}`;
+         input.placeholder = `Day ${i + 1}`;
+         input.required = true;
+         inputContainer.appendChild(input);
+       }
     }
-
-    no_of_day();
-    inputContainer.innerHTML = '';
-    for (let i = 0; i < diffDays + 1; i++) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = `day_${i + 1}`;
-      input.placeholder = `Day ${i + 1}`;
-      input.required = true;
-      inputContainer.appendChild(input);
-    }
-  }
-
-  startDateInput.addEventListener('change', createInputs);
-  endDateInput.addEventListener('change', createInputs);
-
-  document.getElementById('new_tour_form').addEventListener('submit', function(event) {
-    alert("hello")
-    const inputs = inputContainer.querySelectorAll('input');
-    const data = {};
-    inputs.forEach(input => {
-      data[input.name] = input.value;
+   
+    totalDayInput.addEventListener('change', createInputs);
+   
+    document.getElementById('new_tour_form').addEventListener('submit', function(event) {
+       const inputs = inputContainer.querySelectorAll('input');
+       const data = {};
+       inputs.forEach(input => {
+         data[input.name] = input.value;
+       });
+       document.getElementById('itineraryJson').value = JSON.stringify(data);
+       // Corrected typo: console.log(JSON.stringify(data));
     });
-    document.getElementById('itineraryJson').value = JSON.stringify(data);
-    jsdata = JSON.stringify(data);
-    conole.log(jsdata)
-    alert(jsdata)
-    conole.log(jsdata)
-  });
-});
+   });
+   
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-  // Set the min attribute for both startDate and endDate to today's date
-  document.getElementById('startDate').setAttribute('min', today);
-  document.getElementById('endDate').setAttribute('min', today);
-});
-</script>
+
+
+
 {% endblock %}

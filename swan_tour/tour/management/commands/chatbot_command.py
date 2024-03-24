@@ -1,8 +1,7 @@
 # Import necessary libraries
-import nltk
 import random
+import nltk
 from nltk.chat.util import Chat, reflections
-from django.core.management.base import BaseCommand
 from tour.models import Tour
 
 # NLTK reflections for personalized responses
@@ -29,18 +28,18 @@ reflections = {
 def get_tour_details(tour_type=None, city=None, place=None):
     tours = Tour.objects.all()
     if tour_type:
-        tours = tours.filter(tour_type__name__icontains=tour_type)
+        tours = tours.filter(tour_type__icontains=tour_type)
     if city:
-        tours = tours.filter(city__name__icontains=city)
+        tours = tours.filter(city__icontains=city)
     if place:
-        tours = tours.filter(place__name__icontains=place)
+        tours = tours.filter(places__icontains=place)
 
     tour_responses = []
     for tour in tours:
         response = f"Tour Name: {tour.name}\n"
         response += f"Tour Type: {tour.tour_type}\n"
-        response += f"City: {', '.join([c.name for c in tour.city.all()])}\n"
-        response += f"Places: {', '.join([p.name for p in tour.place.all()])}\n"
+        response += f"City: {tour.city}\n"
+        response += f"Places: {tour.places}\n"
         response += f"Overview: {tour.overview}\n"
         response += f"Rating: {tour.rating}\n"
         response += f"Total Price: {tour.total_price}\n\n"
@@ -51,7 +50,7 @@ def get_tour_details(tour_type=None, city=None, place=None):
 # Define the chatbot responses
 pairs = [
     (
-        r"hi|hello|hey",
+        r"hi|hello",
         ["Hello! I'm Disha, your tour chatbot. How can I assist you today?"]
     ),
     (
@@ -60,23 +59,23 @@ pairs = [
     ),
     (
         r"tour type (.*) city (.*)",
-        lambda tour_type, city: "\n\n".join(get_tour_details(tour_type, city))
+        lambda match: "\n\n".join(get_tour_details(match.group(1), city=match.group(2)))
     ),
     (
         r"tour type (.*) place (.*)",
-        lambda tour_type, place: "\n\n".join(get_tour_details(tour_type, place=place))
+        lambda match: "\n\n".join(get_tour_details(match.group(1), place=match.group(2)))
     ),
     (
         r"tour type (.*)",
-        lambda tour_type: "\n\n".join(get_tour_details(tour_type))
+        lambda match: "\n\n".join(get_tour_details(match.group(1)))
     ),
     (
         r"city (.*)",
-        lambda city: "\n\n".join(get_tour_details(city=city))
+        lambda match: "\n\n".join(get_tour_details(city=match.group(1)))
     ),
     (
         r"place (.*)",
-        lambda place: "\n\n".join(get_tour_details(place=place))
+        lambda match: "\n\n".join(get_tour_details(place=match.group(1)))
     ),
     (
         r"exit",
@@ -95,20 +94,18 @@ def disha_chatbot():
     while True:
         user_input = input("User: ")
         if user_input.lower() == 'exit':
-            print("Chatbot: Exiting the chatbot. Goodbye!")
+            print("Exiting the chatbot. Goodbye!")
             break
         else:
             response = chatbot.respond(user_input)
             if isinstance(response, list):
                 for resp in response:
-                    print("Chatbot:", resp)
+                    print("Disha:", resp)
             else:
-                print("Chatbot:", response)
+                print("Disha:", response)
 
-class Command(BaseCommand):
-    help = 'Chatbot command to interact with the tour chatbot'
-
-    def handle(self, *args, **kwargs):
-        nltk.download('punkt')
-        nltk.download('averaged_perceptron_tagger')
-        disha_chatbot()
+# Run the chatbot
+if __name__ == "__main__":
+    nltk.download('punkt')
+    nltk.download('averaged_perceptron_tagger')
+    disha_chatbot()

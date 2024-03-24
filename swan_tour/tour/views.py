@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from .models import Tour, TourBooking, TourReview, TourType, TourBookingName, TourImage, TourHistoryVisit
+from .models import Tour, TourBooking, TourReview, TourType, TourBookingName, TourImage, TourHistoryVisit, TourVehicle, TourRepeatOption
 from app.views import BaseView, SuperUserView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, FormView
@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.contrib import messages 
 from bus.models import Bus
-from .forms import TourForm, TourBookingNameForm, TourBookingForm, TourImageForm
+from .forms import TourForm, TourBookingNameForm, TourBookingForm, TourImageForm, RepeatTourForm
 from hotel.models import Hotel
 from core.models import City, Place, State
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -111,7 +111,7 @@ class TourUserListView(ListView):
         # Filter by start date
         start_date = self.request.GET.get('start_date')
         if start_date:
-            queryset = queryset.filter(start_date=start_date)
+            queryset = queryset.filter(Q(start_date=start_date) | Q(start_date__isnull=True))
 
         # Filter by destination (city)
         destination = self.request.GET.get('destination')
@@ -167,10 +167,12 @@ class TourDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         tour = self.get_object()
 
-        if tour.start_date <= timezone.now().date():
+        if tour.start_date == None:
+            message = "None"
+        elif tour.start_date <= timezone.now().date():
             message = "Sorry, tour is already in progress or finished"
         else:
-            message = None
+            message = "None"
 
         context['message'] = message
         # Add the parsed itineraries data to the context
@@ -337,7 +339,6 @@ def send_contact_response(request):
 # render to string
 # stripe tag     html format mail
 
-# Not Working Folium Map inplace that leaft js working
 class FoliumView(TemplateView):
     template_name = "tour/map.html"
 
@@ -384,8 +385,8 @@ class FoliumView(TemplateView):
 
 class RepeatTourCreateView(SuperUserView, CreateView):
     model = Tour
-    template_name = 'new_repeat_tour.html'
-    form_class = TourForm
+    template_name = 'tour/add_repeat_tour.html'
+    form_class = RepeatTourForm
     success_url = reverse_lazy('db_tour_list')
 
     def get_context_data(self, **kwargs):
@@ -395,9 +396,9 @@ class RepeatTourCreateView(SuperUserView, CreateView):
         context['cities'] = City.objects.all()
         context['places'] = Place.objects.all()
         context['hotels'] = Hotel.objects.all()
-        context['buses'] = Bus.objects.all()
+        context['vehicles'] = TourVehicle.objects.all()
         return context
-    
+
     def form_valid(self, form):
         form.instance.manager = self.request.user
         tour = form.save()
@@ -415,3 +416,7 @@ class RepeatTourCreateView(SuperUserView, CreateView):
         for error in form.errors:
             print("==> error:", error)
         return super().form_invalid(form)
+    
+
+
+

@@ -50,7 +50,7 @@ class Tour(BaseModel):
     group_size = models.IntegerField(null=True, blank=True)
     city = models.ManyToManyField(City, related_name='citys')
     place = models.ManyToManyField(Place, related_name='places')
-    map_link = models.URLField(max_length=500)
+    map_link = models.URLField(max_length=500, blank=True, null=True)
     rating =models.IntegerField(null=True, default=0)
     overview = models.TextField(max_length=2000)
     no_of_day = models.IntegerField(default=0)

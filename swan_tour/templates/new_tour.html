@@ -278,7 +278,6 @@
     endDateInput.addEventListener('change', createInputs);
   
     document.getElementById('new_tour_form').addEventListener('submit', function(event) {
-      alert("hello")
       const inputs = inputContainer.querySelectorAll('input');
       const data = {};
       inputs.forEach(input => {
@@ -286,8 +285,6 @@
       });
       document.getElementById('itineraryJson').value = JSON.stringify(data);
       jsdata = JSON.stringify(data);
-      conole.log(jsdata)
-      alert(jsdata)
       conole.log(jsdata)
     });
   });

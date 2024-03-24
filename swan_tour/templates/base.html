@@ -24,7 +24,7 @@
     <!-- css part end-->
     {% block css%} {% endblock %}
 
-    <title>{% block title%}And Tour{% endblock %}</title>
+    <title>{% block title%}Swam Tour{% endblock %}</title>
 </head>
 
 <body data-barba="wrapper">
@@ -159,7 +159,10 @@
                   </li>
 
                   <li>
-                    <a href="{% url 'new_tour' %}" class="text-15">Add tour</a>
+                    <a href="{% url 'new_tour' %}" class="text-15">Add Group tour</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'add_repeat_tour' %}" class="text-15">Add Custom Tour</a>
                   </li>
                 </ul>
               </div>
@@ -286,7 +289,6 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAz77U5XQuEME6TpftaMdX0bBelQxXRlM"></script>
     <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
-    
     <script src="{% static 'js/vendors.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
   {% block js %}

@@ -77,8 +77,6 @@
                                         <p>Good</p>
                                     {% elif tour.rating > 3 %}
                                         <p>Average</p>
-                                    {% elif tour.rating > 2 %}
-                                        <p>ok</p>
                                     {% else %}
                                         <p>Newly Added</p>
                                     {% endif %}
@@ -139,7 +137,6 @@
                                     {% else %}
                                     <img class="imgs_up" src="{{ last_image.image.url }}" alt="imagenot found">
                                     {% endif %}
-                                    
                                 </div>
                                 <div>
                                     <img class="imgs_up" src="{{ tour.image_2.url }}" alt="img">
