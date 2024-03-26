@@ -22,17 +22,14 @@
               <div class="row y-gap-20 justify-between items-center">
                 <div class="col-md-6">
                   <div class="fw-500 lh-14">Total Packages</div>
-                  <div class="text-30 lh-16 fw-600 mt-5 text_blue">{{total_number_tour}}</div>
-                  
+                  <div class="text-30 lh-16 fw-600 mt-5 text_blue">{{total_number_tour}}</div>                  
                 </div>
-
                 <div class="col-md-6">
                   <img src="{% static 'img/dashboard/icons/arrow-1.png' %}" alt="icon">
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-xl-3 col-md-6 col-sm-6 col-12">
             <div class="py-15 px-30 custom_border_left_oreng custom_rounded bg-white custom_shadow">
               <div class="row y-gap-20 justify-between items-center">
@@ -40,30 +37,25 @@
                   <div class="fw-500 lh-14">Total Hotel</div>
                   <div class="text-30 lh-16 fw-600 mt-5 text_oreng">{{total_number_hotel}}</div>
                 </div>
-
                 <div class="col-md-6">
                   <img src="{% static 'img/dashboard/icons/arrow-2.png' %}" alt="icon">
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-xl-3 col-md-6 col-sm-6 col-12">
             <div class="py-15 px-30 custom_border_left_sky custom_rounded bg-white custom_shadow">
               <div class="row y-gap-20 justify-between items-center">
                 <div class="col-md-6">
                   <div class="fw-500 lh-14">Total Place</div>
                   <div class="text-30 lh-16 fw-600 mt-5 text_sky">{{total_number_place}}</div>
-                
                 </div>
-
                 <div class="col-md-6">
                   <img src="{% static 'img/dashboard/icons/arrow-3.png' %}" alt="icon">
                 </div>
               </div>
             </div>
           </div>
-
           <div class="col-xl-3 col-md-6 col-sm-6 col-12">
             <div class="py-15 px-30 custom_border_left_green custom_rounded bg-white custom_shadow">
               <div class="row y-gap-20 justify-between items-center">
@@ -71,27 +63,24 @@
                   <div class="fw-500 lh-14">Total Bus</div>
                   <div class="text-30 lh-16 fw-600 mt-5 text_green">{{total_number_bus}}</div>
                 </div>
-
                 <div class="col-md-6">
                   <img src="{% static 'img/dashboard/icons/arrow-4.png' %}" alt="icon">
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
         <div class="row y-gap-30 pt-20">
           <div class="col-xl-6 col-md-6">
             <div class="py-30 px-30 custom_rounded bg-white custom_shadow">
               <div class="d-flex justify-between items-center heading_border">
                 <h2 class="text-18 lh-1 fw-500">
-                  Expense overview
+                  Booking overview
                 </h2>
               </div>
 
-              <div class="pt-30">
-                <canvas id="lineChart"></canvas>
+              <div>
+                <canvas id="myChart"></canvas>
               </div>
             </div>
           </div>
@@ -102,95 +91,83 @@
                 <h2 class="text-18 lh-1 fw-500">
                   My bookings
                 </h2>
-              </div>
+              </div>  
 
-              <div class="overflow-scroll scroll-bar-1 pt-30">
+              
+                
                 <table class="table-2 col-12">
                   <thead class="">
                     <tr>
-                      <th>Sl no.</th>
                       <th>Booking ID</th>
-                      <th>Booking type</th>
-                      <th>Booking amount</th>
+                      <th>Tour Name</th>
+                      <th>User Name</th>
+                      <th>Booking Start Date</th>
+                      <th>Total Booking</th>
+                      <th>total price</th>
                       <th>Status</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for booking in bookings|slice:"-6:" %}
                     <tr>
-                      <td>01.</td>
-                      <td>#JK589V80</td>
-                      <td>Hotel</td>
-                      <td>$754.00</td>
+                      <td>{{booking.id}}</td>
+                      <td>{{booking.tour.name}}</td>
+                      <td>{{booking.user.username}}</td>
+                      <td>{{booking.start_date}}</td>
+                      <td>{{booking.no_of_people_booking}}</td>
+                      <td>{{booking.total_price}}</td>\
                       <td>
-                        <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
-                      </td>
-                      <td><i class="fas fa-eye"></i></td>
-                    </tr>
-                    <tr>
-                    <tr>
-                      <td>02.</td>
-                      <td>#JK589V80</td>
-                      <td> Flight</td>
-                      <td>$754.00</td>
-                      <td>
-                        <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
-                      </td>
-                      <td><i class="fas fa-eye"></i></td>
-                    </tr>
-                    <tr>
-                      <td>03.</td>
-                      <td>#JK589V80</td>
-                      <td>Tour</td>
-                      <td>$754.00</td>
-                      <td>
-                        <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
-                      </td>
-                      <td><i class="fas fa-eye"></i></td>
-                    </tr>
-                    <tr>
-                      <td>04.</td>
-                      <td>#JK589V80</td>
-                      <td>Flight</td>
-                      <td>$754.00</td>
-                      <td>
-                        <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
-                      </td>
-                      <td><i class="fas fa-eye"></i></td>
-                    </tr>
-                    <tr>
-                      <td>05.</td>
-                      <td>#JK589V80</td>
-                      <td>Hotel</td>
-                      <td>$754.00</td>
-                      <td>
+                      {% now "Y-m-d" as current_date %}
+                      {% if booking.cancellation_status == False and booking.end_date > current_date %}
+                      <div class="text-center col-12 text-14 fw-500 text-yellow-3">on going</div>
+                      {% elif booking.cancellation_status == False %}
+                      <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
+                      {% else %}
                         <div class="text-center col-12 text-14 fw-500 text-red-3">Canceled</div>
+                      {% endif %}
                       </td>
-                      <td><i class="fas fa-eye"></i></td>
                     </tr>
-                    <tr>
-                      <td>06.</td>
-                      <td>#JK589V80</td>
-                      <td>Tour</td>
-                      <td>$754.00</td>
-                      <td>
-                        <div class="text-center col-12 text-14 fw-500 text-yellow-3">Completed</div>
-                      </td>
-                      <td><i class="fas fa-eye"></i></td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-
         {% include "db_footer.html" %}
       </div>
     </div>
   </div>
-
   <!-- JavaScript -->
-  <script src="{% static 'js/chart.min.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          {% for booking in bookings %}
+          "{{ booking.tour.name}}",
+          {% endfor %}
+        ],
+        datasets: [{
+          label: '# non of bookings',
+          data: [            
+            {% for booking in bookings%}
+            "{{ booking.no_of_people_booking }}",
+            {% endfor %}],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
 {% endblock %}

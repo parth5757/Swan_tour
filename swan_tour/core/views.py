@@ -289,6 +289,7 @@ class Dashboard(SuperUserView, BaseView, TemplateView):
         total_number_hotel = Hotel.objects.count()
         total_number_tour = Tour.objects.count()
         total_number_bus = Bus.objects.count()
+        context['bookings'] = TourBooking.objects.all()
         context['total_number_place'] = total_number_place
         context['total_number_hotel'] = total_number_hotel
         context['total_number_tour'] =total_number_tour
