@@ -22,7 +22,7 @@ class HotelView():
     class HotelCreateView(BaseView, SuperUserView, CreateView):
         model = Hotel
         # form_class = HotelForm
-        template_name = 'db_vendor_add_hotel.html'
+        template_name = 'hotel/db_vendor_add_hotel.html'
         fields = ['hotelname', 'address', 'map_link', 'total_room', 'price', 'rating', 'overview', 'facility', 'city', 'place']
         success_url = reverse_lazy('db_hotel_list')
         
@@ -56,7 +56,7 @@ class HotelView():
     class HotelListView(BaseView, SuperUserView, ListView):
         model =Hotel
         context_object_name = 'hotel'
-        template_name = 'db_vendor_hotels.html'
+        template_name = 'hotel/db_vendor_hotels.html'
     
         # add hotel search option
         # def get_queryset(self):
@@ -67,7 +67,7 @@ class HotelView():
     class HotelDeleteView(BaseView, SuperUserView, DeleteView):
         '''Delete view of an Hotel'''
         model = Hotel
-        template_name = 'db_vendor_hotels.html'
+        template_name = 'hotel/db_vendor_hotels.html'
         success_url = reverse_lazy('db_hotel_list')
 
         def form_valid(self, form):
@@ -78,21 +78,21 @@ class HotelView():
         '''Hotel Updat view'''
         model = Hotel
         fields = ['hotelname', 'address', 'total_room', 'price', 'facility']
-        template_name = 'hotel_update.html'
+        template_name = 'hotel/hotel_update.html'
         success_url = reverse_lazy('db_hotel_list')
 
 
     class HotleBookingListView(SuperUserView, ListView):
         model = HotelBooking
         context_object_name = 'hotel_booking'
-        template_name = 'hotel_booking_list.html'
+        template_name = 'hotel/hotel_booking_list.html'
 
 class HotelUserView():
 
     class HotelListView(ListView):
         model = Hotel
         context_object_name = 'hotel'
-        template_name = 'hotel_user_list.html'
+        template_name = 'hotel/hotel_user_list.html'
         paginate_by = 6
 
         def get_context_data(self, **kwargs):
@@ -132,7 +132,7 @@ class HotelUserView():
 
     class ReviewCreate(BaseView, CreateView):
         model = Hotel_Review    
-        template_name = 'hotel_booking.html'
+        template_name = 'hotel/hotel_booking.html'
         fields = ['user', 'hotel', 'rate', 'comment']
         success_url = reverse_lazy('db_hotel_list')
 

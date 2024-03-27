@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import UserView
 # from django.contrib.auth.views import LogoutView
-from .views import UserView, About, Dashboard, Contact, Profile
+from app.views import ErrorView
+from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import (
@@ -24,12 +25,12 @@ urlpatterns = [
     path('password-reset/done/', PasswordResetDoneView.as_view(template_name='users/reset_password_done.html'),name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'),name='password_reset_confirm'),
     path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),name='password_reset_complete'),
-
     # path()
     path('profile/', Profile.as_view(), name='profile'),
     path('', UserView.Home.as_view(), name='home'),
     path('about/', About.as_view(), name='about'),
     path('contact/', Contact.as_view(), name='contact'),
+    path('notification/', ContactNotification.as_view(), name='notification'),
 
     # addmin sid urls
     path('dashboard/', Dashboard.as_view(), name='dashboard'),

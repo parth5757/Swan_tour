@@ -129,21 +129,11 @@
                         </div>
                         <div class="tour_details_img_wrapper">
                             <div class="slider slider-for">
+                                {% for images in tour.tourimage_set.all %}
                                 <div>
-                                    {% if tour.tourimage_set.all %}
-                                    {% with tour.tourimage_set.last as last_image %}
-                                    <img class="imgs_up" src="{{ last_image.image.url }}" alt="img">
-                                    {% endwith %}
-                                    {% else %}
-                                    <img class="imgs_up" src="{{ last_image.image.url }}" alt="imagenot found">
-                                    {% endif %}
+                                    <img class="imgs_up" src="{{ images.image.url }}" alt="img">
                                 </div>
-                                <div>
-                                    <img class="imgs_up" src="{{ tour.image_2.url }}" alt="img">
-                                </div>
-                                <div>
-                                    <img class="imgs_up" src="{{ tour.image_3.url }}" alt="img">
-                                </div>
+                                {% endfor %}
                                 {% for i in tour.hotels.all  %}
                                     <div>
                                         <img class="imgs_up" src="{{ i.hotel_image.url }}" alt="img">
@@ -151,15 +141,11 @@
                                 {% endfor %}
                             </div>
                             <div class="slider slider-nav">
+                                {% for images in tour.tourimage_set.all %}
                                 <div>
-                                    <img class="imgs_bt" src="{{ tour.tour_image.url }}" alt="img">
+                                    <img class="imgs_bt" src="{{ images.image.url }}" alt="img">
                                 </div>
-                                <div>
-                                    <img class="imgs_bt" src="{{ tour.image_2.url }}" alt="img">
-                                </div>
-                                <div>
-                                    <img class="imgs_bt" src="{{ tour.image_3.url }}" alt="img">
-                                </div>
+                                {% endfor %}
                                 {% for i in tour.hotels.all  %}
                                     <div>
                                         <img class="imgs_bt" src="{{ i.hotel_image.url }}" alt="img">
@@ -264,6 +250,9 @@
                                 <div class="valid_date_area">
                                     <div class="valid_date_area_one">
                                         <h5>Tour Start Date</h5>
+                                        {% comment %} {% if tour.start_date == None %} {% endcomment %}
+
+
                                         <p>{{ tour.start_date }}</p>
                                     </div>
                                     <div class="valid_date_area_one">

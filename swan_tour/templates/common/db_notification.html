@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title%}Swan Tour Contact Notification{% endblock %}
+{% block dashboard %}
+<div class="dashboard" data-x="dashboard" data-x-toggle="-is-sidebar-open">
+  <div class="dashboard__sidebar bg-white scroll-bar-1">
+  </div>
+
+  <div class="dashboard__main">
+      <div class="dashboard__content">
+          <div class="row y-gap-20 justify-between items-end pb-20 lg:pb-40 md:pb-32">
+              <div class="col-auto">
+
+                  <h1 class="text-30 lh-14 fw-600">Notification</h1>
+                  <div class="text-15 text-light-1">In do eiusmod et quis dolor velit</div>
+
+              </div>
+
+              <div class="col-auto">
+
+              </div>
+          </div>
+
+
+          <div class="py-30 px-30 rounded-4 bg-white custom_shadow">
+              <div class="tabs -underline-2 js-tabs">
+                  <div class="tabs__content js-tabs-content">
+
+
+                      <div class="accordion -simple row y-gap-20 js-accordion">
+        return context
+                          {% for contact in contacts %}
+                          <div class="col-12">
+                              <div class="accordion__item px-20 py-20 border-light rounded-4">
+                                  <div class="accordion__button d-flex items-center">
+                                      <div
+                                          class="accordion__icon size-40 flex-center bg-light-2 rounded-full mr-20">
+                                          <i class="icon-plus"></i>
+                                          <i class="icon-minus"></i>
+                                      </div>
+
+                                      <div class="button text-dark-1">{{ contact.first_name }}</div>
+                                  </div>
+
+                                  <div class="accordion__content">
+                                      <div class="pt-20 pl-60">
+                                          <p class="text-15">{{ contact.message }}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <footer class="footer -dashboard mt-60">
+              <div class="footer__row row y-gap-10 items-center justify-between">
+                  <div class="col-auto">
+                      <div class="row y-gap-20 items-center">
+                        <div class="col-auto">
+                          <div class="text-14 lh-14 mr-30">Copyright © 2022 All Rights Reserved</div>
+                        </div>
+                      </div>
+                    </div>
+                  <div class="col-auto">
+                      <div class="d-flex x-gap-5 y-gap-5 items-center">
+                          <img src="img/avatars/card.png" alt="img">
+                       </div>
+                  </div>
+              </div>
+          </footer>
+      </div>
+  </div>
+</div>
+{% endblock %}

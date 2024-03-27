@@ -108,7 +108,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for booking in bookings|slice:"-6:" %}
+                    {% for booking in tourbooking%}
                     <tr>
                       <td>{{booking.id}}</td>
                       <td>{{booking.tour.name}}</td>
@@ -170,4 +170,4 @@
       }
     });
   </script>
-{% endblock %}
+{% endblock %}  

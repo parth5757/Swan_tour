@@ -12,7 +12,7 @@ from .models import Bus
 class BusView():
     class BusCreateView(SuperUserView, CreateView):
         model = Bus
-        template_name = 'admin/new_bus.html'
+        template_name = 'bus/new_bus.html'
         fields = []
         success_url = reverse_lazy('dashboard')
 

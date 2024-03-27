@@ -78,8 +78,9 @@
                                         profile</a></li>
                                 <li><a href="dashboard.html"><i class="fas fa-wallet"></i>Wallet</a></li>
                                 <li><a href="notification.html"><i class="fas fa-bell"></i>Notifications</a></li>
-                                <li><a href="#!" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                                            class="fas fa-sign-out-alt"></i>Logout</a></li>
+                                <li>
+                                <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -165,7 +166,7 @@
     </div>
 
     <!-- Logout Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body logout_modal_content">
@@ -184,7 +185,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
     <!-- Bootstrap js -->

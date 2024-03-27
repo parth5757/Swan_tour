@@ -12,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.contrib.auth.views import LoginView
 from app.views import SuperUserView,BaseView
-from core.models import Place, City, State, Contact
+from core.models import Contact, Place, City, State
 from hotel.models import Hotel
 from tour.models import Tour, TourType, TourBooking, TourHistoryVisit, TourImage
 from django.db.models import Count
@@ -41,7 +41,7 @@ class UserView():
         '''Create at User Registration'''
         model = User #model name
         template_name = 'users/register.html'
-        fields = ["first_name", "last_name", "username", "email", "password"] #field that want to send from user
+        fields = ["first_name", "last_name", "username", "email", "password", "is_active"] #field that want to send from user
         success_url = reverse_lazy('login')
         
         '''check form is valid or not if valid than executr'''
@@ -136,6 +136,7 @@ class UserView():
         success_url = reverse_lazy('dashboard')
 
         def form_valid(self, form):
+            print(form)
             form.save()
             return super().form_valid(form)
         
@@ -282,13 +283,14 @@ class Profile(LoginRequiredMixin, TemplateView):
 class Dashboard(SuperUserView, BaseView, TemplateView):
     '''creat admin home page'''
     template_name = 'admin/db_dashboard.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_number_place = Place.objects.count()
         total_number_hotel = Hotel.objects.count()
         total_number_tour = Tour.objects.count()
         total_number_bus = Bus.objects.count()
+        context['tourbooking'] = TourBooking.objects.all()[:6]
         context['bookings'] = TourBooking.objects.all()
         context['total_number_place'] = total_number_place
         context['total_number_hotel'] = total_number_hotel
@@ -327,3 +329,13 @@ class Contact (CreateView):
         for error in form.errors:
             print("==> error:", error)
         return super().form_invalid(form)
+    
+
+class ContactNotification(TemplateView):
+    template_name = "common/db_notification.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contacts = Contact.objects.all()
+        context['contacts'] = contacts
+        return context
+    
