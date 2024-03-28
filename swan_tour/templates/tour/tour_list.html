@@ -88,8 +88,29 @@
                       <td>{{ tour.image_3 }}</td> {% endcomment %}
                       <td>{{ tour.total_price }}</td>
                       <td>
-                        {% comment %} <a href="{% url 'tour_update' tour.id %}">Update</a>
-                        <a href="{% url 'tour_delete' tour.id %}">Delete</a> {% endcomment %}
+                        <div class="row x-gap-10 y-gap-10 items-center">
+                          {% comment %} <div class="col-auto">
+                            <button class="flex-center bg-light-2 rounded-4 size-35">
+                              <i class="icon-eye text-16 text-light-1"></i>
+                            </button>
+                          </div> {% endcomment %}
+                          <div class="col-auto">
+                            <form action="{% url 'tour_update' tour.id %}" method="post">
+                              {% csrf_token %}
+                              <button class="flex-center bg-light-2 rounded-4 size-35">
+                                <i class="icon-edit text-16 text-light-1"></i>
+                              </button>
+                            </form>
+                          </div>
+                          <div class="col-auto">
+                            <form action="{% url 'tour_delete' tour.id %}" method="post">
+                              {% csrf_token %}
+                              <button name="delete" class="flex-center bg-light-2 rounded-4 size-35">
+                                <i class="icon-trash-2 text-16 text-light-1"></i>
+                              </button>
+                            </form>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   {% endfor %}

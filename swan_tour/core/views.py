@@ -1,7 +1,7 @@
 from django.db.models.query import QuerySet
 from .forms import ContactForm
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from app.views import BaseView
 from django.contrib.auth.models import User
 from django.views.generic import CreateView, ListView, TemplateView, View
@@ -20,6 +20,8 @@ from bus.models import Bus
 from django_datatables_too.mixins import DataTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 # Create your views here.
 
 class UserView():
@@ -235,7 +237,7 @@ class UserView():
             tours = Tour.objects.order_by('-created_at')[:6]
 
             # Retrieve popular places
-            popular_places = Place.objects.all()  # You need to define Place model
+            popular_places = Place.objects.order_by('-created_at')[:20  ]  # You need to define Place model
 
             # Retrieve top hotels
             top_hotel = Hotel.objects.order_by('-rating')[:5]
@@ -277,7 +279,6 @@ class Profile(LoginRequiredMixin, TemplateView):
             context = super().get_context_data(**kwargs)
             user = self.request.user
             context['user'] = user
-            print("email", user.email)
             return context
 
 class Dashboard(SuperUserView, BaseView, TemplateView):
@@ -339,3 +340,17 @@ class ContactNotification(TemplateView):
         context['contacts'] = contacts
         return context
     
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password has been changed successfully!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'admin/change_password.html', {'form': form})

@@ -5,11 +5,12 @@ from app.views import BaseView, SuperUserView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, FormView
 from django.views.generic import CreateView, TemplateView, ListView
+from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView
 from django.contrib import messages 
 from bus.models import Bus
-from .forms import TourForm, TourBookingNameForm, TourBookingForm, TourImageForm, RepeatTourForm
+from .forms import TourForm, TourBookingNameForm, TourBookingForm, TourImageForm, RepeatTourForm, TourUpdateForm, TourReviewForm
 from hotel.models import Hotel
 from core.models import City, Place, State
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -43,7 +44,7 @@ class TourCreateView(SuperUserView, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tourtypes'] = TourType.objects.all()
-        print(context['tourtypes'])
+        # print(context['tourtypes'])
         context['cities'] = City.objects.all()
         context['places'] = Place.objects.all()
         context['hotels'] = Hotel.objects.all()
@@ -68,11 +69,23 @@ class TourCreateView(SuperUserView, CreateView):
             print("==> error:", error)
         return super().form_invalid(form)
 
-class TourDeleteView(BaseView, SuperUserView, DeleteView):
+class TourUpdateView(SuperUserView, UpdateView):
+    model = Tour
+    form_class = TourUpdateForm
+    template_name = "tour/tour_update.html"
+    success_url = reverse_lazy('db_tour_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tourtypes'] = TourType.objects.all()
+        context['cities'] = City.objects.all()
+        return context
+
+class TourDeleteView(SuperUserView, DeleteView):
     '''Delete view of an Hotel'''
     model = Tour
-    template_name = 'tour_list.html'
-    success_url = reverse_lazy('tour_list')
+    template_name = 'db_tour_list.html'
+    success_url = reverse_lazy('db_tour_list')
 
     def form_valid(self, form):
         messages.success(self.request, "Tour deleted successfully!!")
@@ -82,17 +95,17 @@ class TourUserListView(ListView):
     model = Tour
     context_object_name = 'tours'
     template_name = 'tour/tour_search.html'
-    paginate_by = 20
+    paginate_by = 4
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
         # Filter tour_type
         tour_types = self.request.GET.get('tour_type')
-        print("tour type: ", tour_types)
+        # print("tour type: ", tour_types)
         if tour_types:
             tour_type_ids = [int(i) for i in tour_types.split(',')]
-            print("tour type: ", tour_type_ids)
+            # print("tour type: ", tour_type_ids)
             queryset = queryset.filter(tour_type_id__in=tour_type_ids)
 
         # Filter by ratings
@@ -202,7 +215,7 @@ class TourBookingSessionView(BaseView, View):
         # Assuming form data contains 'tour_id' and 'no_of_people_booking'
         tour_id = request.POST.get('tour_id')
         no_of_people_booking = request.POST.get('no_of_people_booking')
-        print("tour_id", tour_id)
+        # print("tour_id", tour_id)
         # print("no_of_people_booking", no_of_people_booking)
 
         # Set the session data
@@ -384,6 +397,7 @@ class FoliumView(TemplateView):
 
 
 class RepeatTourCreateView(SuperUserView, CreateView):
+
     model = Tour
     template_name = 'tour/add_repeat_tour.html'
     form_class = RepeatTourForm
@@ -392,7 +406,7 @@ class RepeatTourCreateView(SuperUserView, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tourtypes'] = TourType.objects.all()
-        print(context['tourtypes'])
+        # print(context['tourtypes'])
         context['cities'] = City.objects.all()
         context['places'] = Place.objects.all()
         context['hotels'] = Hotel.objects.all()
@@ -418,5 +432,8 @@ class RepeatTourCreateView(SuperUserView, CreateView):
         return super().form_invalid(form)
     
 
-
-
+class TourReviewCreateView(BaseView, CreateView):
+    model = TourReview
+    template_name = 'tour/tour_detail.html'
+    form_class = TourReviewForm
+    success_url = reverse_lazy('tour_user_list')

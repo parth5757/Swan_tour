@@ -9,6 +9,12 @@ class TourForm(forms.ModelForm):
         # fields = '__all__'
 
 
+class TourUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Tour
+        fields = ['name', 'tour_type', 'city', 'place', 'overview', 'hotels', 'buses', 'total_price']
+
 class TourImageForm(forms.Form):
 
     class Meta:

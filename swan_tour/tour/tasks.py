@@ -32,3 +32,4 @@ def send_contact_func(self):
         fail_silently=True,
     )
     print("From", settings.EMAIL_HOST_USER)
+

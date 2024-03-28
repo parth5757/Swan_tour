@@ -62,11 +62,12 @@
                         <div class="common_author_form">
                             <form action="{% url "login" %}" method="post" id="main_author_form">
                                 {% csrf_token %}
-
                                 {% for message in messages %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{message}} <button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
+                                    {% if message == "invalid username or password" %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ message }} <button type="button" class="btn-close position-absolute top-50 end-0 translate-middle-y" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                                 <div class="form-group">
                                     <input type="text" name="username" class="form-control" placeholder="Enter user name" />

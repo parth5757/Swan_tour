@@ -1,10 +1,10 @@
 from django.urls import path, include
 from .views import UserView
-# from django.contrib.auth.views import LogoutView
 from app.views import ErrorView
 from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification
 from django.conf import settings
 from django.conf.urls.static import static
+
 from django.contrib.auth.views import (
     LogoutView,
     PasswordResetView, 
