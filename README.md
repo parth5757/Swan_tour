@@ -27,6 +27,14 @@ $ python manage.py migrate
 
 <br />
 
+> **Step 3** - install all required dependencies 
+
+```bash
+$ pip install -r requirements.txt
+```
+
+<br />
+
 > **Step 4** - Start Project
 
 ```bash
