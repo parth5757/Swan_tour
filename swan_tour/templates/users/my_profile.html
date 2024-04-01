@@ -11,7 +11,7 @@
     <title>My Profile - Swan Tour </title>
     {% include 'css.html' %}
 </head>
-
+change_password
 <body>
     <!-- preloader Area -->
     {% include 'loader.html' %}
@@ -89,8 +89,8 @@
                     <div class="dashboard_common_table">
                         <h3>My Profile</h3>
                         <div class="profile_update_form">
-                            <form action="https://andit.co/projects/html/and-tour/demo/!#" id="profile_form_area">
-                                <div class="row">
+                            <div class="row">
+                                <form action="#" id="profile_form_area">
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="f-name">First name</label>
@@ -129,26 +129,46 @@
                                             <p>Change password</p>
                                         </div>
                                     </div>
-                                    <div class="change_password_input_boxed">
-                                        <h3>Change password</h3>
-                                        <form action=""></form>
-                                        <div class="row">
+                                </form>
+                                {% comment %} <div class="change_password_input_boxed">
+                                    <h3>Change password</h3>
+                                    <div class="row">
+                                    <form action="#" method="post">
+                                            {% csrf_token %}
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <input type="password" class="form-control"
-                                                        placeholder="Old Password" >
+                                                    <input type="password" name="old_password" class="form-control"
+                                                        placeholder="Old Password" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <input type="password" class="form-control"
-                                                        placeholder="New Password">
+                                                    <input type="password" name="new_password1" class="form-control"
+                                                        placeholder="New Password" required>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <input type="password" name="new_password2" class="form-control"
+                                                        placeholder="Confirm New Password" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <button type="submit" class="btn btn_theme btn_md">Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
+                                </div> {% endcomment %}
+                                <div class="change_password_input_boxed">
+                                    <h3>Change password</h3>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit" class="btn btn_theme btn_md">Submit</button>
+                                    </form>
                                 </div>
-                            </form>
+                                {% comment %} end {% endcomment %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,27 +185,6 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 
-    <!-- Logout Modal -->
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body logout_modal_content">
-                    <div class="btn_modal_closed">
-                        <button type="button" data-bs-dismiss="modal" aria-label="Close"><i
-                                class="fas fa-times"></i></button>
-                    </div>
-                    <h3>
-                        Are you sure? <br>
-                        you want to log out.
-                    </h3>
-                    <div class="logout_approve_button">
-                        <a href="{% url 'logout' %}" data-bs-dismiss="modal" class="btn btn_theme btn_md">Yes Confirm</a> 
-                        <button data-bs-dismiss="modal" class="btn btn_border btn_md">No Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
 
     <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
     <!-- Bootstrap js -->

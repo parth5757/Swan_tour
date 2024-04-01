@@ -1,9 +1,10 @@
 from django.db.models.query import QuerySet
-from .forms import ContactForm
+from .forms import ContactForm, CustomPasswordChangeForm
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from app.views import BaseView
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 from django.views.generic import CreateView, ListView, TemplateView, View
 from django.views.generic.edit import UpdateView, DeleteView, FormView
 from django.views.generic.detail import DetailView
@@ -20,8 +21,11 @@ from bus.models import Bus
 from django_datatables_too.mixins import DataTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django_datatables_view.base_datatable_view import BaseDatatableView
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+
+
+from django.contrib.auth.views import PasswordChangeView
+
+
 # Create your views here.
 
 class UserView():
@@ -341,16 +345,15 @@ class ContactNotification(TemplateView):
         return context
     
 
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password has been changed successfully!')
-            return redirect('change_password')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'admin/change_password.html', {'form': form})
+class CustomPasswordChangeView(PasswordChangeView):
+    form_class = CustomPasswordChangeForm  # Use the custom form
+    template_name = 'users/my_profile.html'
+    success_url = reverse_lazy('profile')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been changed successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'There was an error. Please try again.')
+        return super().form_invalid(form)

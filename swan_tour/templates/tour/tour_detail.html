@@ -61,29 +61,29 @@
                 <div class="col-lg-8">
                     <div class="tour_details_leftside_wrapper">
                         <div class="tour_details_heading_wrapper">
-                            <div class="tour_details_top_heading">
-                                <h2>{{ tour.name }}</h2>
-                                <h5><i class="fas fa-map-marker-alt"></i> 
-                                    {% for place in tour.place.all  %}
-                                        {{ place.name }},
-                                    {% endfor %}
-                                    </h5>
-                            </div>
-                            <div class="tour_details_top_heading_right">
-                                <h4>
-                                    {% if tour.rating >= 5 %}
-                                        <p>Excellent</p>
-                                    {% elif tour.rating > 4 %}
-                                        <p>Good</p>
-                                    {% elif tour.rating > 3 %}
-                                        <p>Average</p>
-                                    {% else %}
-                                        <p>Newly Added</p>
-                                    {% endif %}
-                                </h4>
-                                <h6>{{ tour.rating }}/5</h6>
-                                <p></p>
-                            </div>
+                        <div class="tour_details_top_heading">
+                            <h2>{{ tour.name }}</h2>
+                            <h5><i class="fas fa-map-marker-alt"></i> 
+                                {% for place in tour.place.all  %}
+                                    {{ place.name }},
+                                {% endfor %}
+                                </h5>
+                        </div>
+                        <div class="tour_details_top_heading_right">
+                            <h4>
+                                {% if tour.rating >= 5 %}
+                                    <p>Excellent</p>
+                                {% elif tour.rating > 4 %}
+                                    <p>Good</p>
+                                {% elif tour.rating > 3 %}
+                                    <p>Average</p>
+                                {% else %}
+                                    <p>Newly Added</p>
+                                {% endif %}
+                            </h4>
+                            <h6>{{ tour.rating }}/5</h6>
+                            <p></p>
+                        </div>
                         </div>
                         <div class="tour_details_top_bottom">
                             <div class="toru_details_top_bottom_item">
@@ -294,18 +294,20 @@
                                 <div class="tour_details_right_box_heading">
                                     <h3>Standard package</h3>
                                 </div>
+                                {% if tour.start_date == None %}
+                                <div class="form-group">
+                                    <label for="startDate">Tour Start Date</label>
+                                    <input type="date" id="startDate" value="" class="form-control startDate">
+                                </div>
+                                <input type="hidden" id="noOfDays" name="no_of_day" value="{{ tour.no_of_day }}" class="form-control">
+                                <div class="form-group">
+                                    <label for="endDate">Tour End Date</label>
+                                    <input type="date" id="endDate" disabled value="" class="form-control endDate">
+                                </div>
+                                {% else %}
                                 <div class="valid_date_area">
                                     <div class="valid_date_area_one">
-                                        {% if tour.start_date == '' %}
-                                        <h5>Tour End Date</h5>
-                                        <p>{{ tour.start_date }}</p>      
-                                        {% else %}
-                                                                          
-                                        {% endif %}
                                         <h5>Tour Start Date</h5>
-                                        {% comment %} {% if tour.start_date == None %} {% endcomment %}
-
-
                                         <p>{{ tour.start_date }}</p>
                                     </div>
                                     <div class="valid_date_area_one">
@@ -313,6 +315,7 @@
                                         <p>{{ tour.end_date }}</p>
                                     </div>
                                 </div>
+                                {% endif %}
                                 <div class="tour_package_details_bar_list">
                                     <h5>Package details</h5>
                                     <ul>
@@ -336,9 +339,22 @@
                                 </div>
                             </div>
                             <div class="tour_select_offer_bar_bottom">
-                                <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Select
-                                    offer</button>
+                                {% if tour.get_available_group_size == 0 %} 
+                                    <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" disabled aria-controls="offcanvasRight">Select
+                                        place</button>
+                                    <p>Available Group Size: {{tour.get_available_group_size}}</p>
+                                {% elif tour.get_available_group_size  == None %}
+                                    <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight"  aria-controls="offcanvasRight">Select
+                                    place</button>
+                                {% else %}
+                                    <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Select
+                                        place</button>
+                                    <p>Available Group Size: {{tour.get_available_group_size}}</p>
+
+                                {% endif %}
                             </div>
                         </div>
 
@@ -367,26 +383,39 @@
                 </div>
             </div>
         </div>
+        {% comment %} review not wrki {% endcomment %}
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="write_your_review_wrapper">
                         <h3 class="heading_theme">Write your review</h3>
                         <div class="write_review_inner_boxed">
-                            <form action="" id="news_comment_form">
+                            <form action="{% url 'tour_review' %}" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-froup">
-                                            <input type="text" class="form-control bg_input"
-                                                placeholder="Enter full name">
+                                            <input type="text" class="form-control bg_input" value="{{ user.username }}" readonly>
+                                            <input type="hidden" class="form-control bg_input" value="{{ user.id }}" name="user" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-froup">
-                                            <input type="text" class="form-control bg_input"
-                                                placeholder="Enter email address">
+                                            <input type="text" class="form-control bg_input" value="{{ tour.name }}" placeholder="tour name" readonly>
+                                            <input type="hidden" class="form-control bg_input" value="{{ tour.id}}" name="user" readonly>
                                         </div>
                                     </div>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <div class="col-lg-12">
+                                        <div class="form-froup">
+                                            <input type="number" class="form-control bg_input " placeholder="Rate Tour  in 1 to 5" name="rating" id="rating" min=1 max=5>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <br/>
+                                    <br/>
                                     <div class="col-lg-12">
                                         <div class="form-froup">
                                             <textarea rows="6" placeholder="Write your comments"
@@ -424,10 +453,36 @@
         <div class="offcanvas-body">
             <div class="side_canvas_wrapper">
                 <h2>{{ tour.name }} </h2>
-                <h3 class="alert alert-danger">{{ message }}</h3>
+                {% if message == "None" %}
+                {% else %}
+                <h3 class="alert alert-danger">{{message}}</h3>
+                {% endif %}
                 <div class="select_person_side">
                     <h3>Select person</h3>
                     <p>available seat: {{ tour.get_available_group_size }}</p>
+                    {% if tour.start_date == None %}
+                    <div class="form-group">
+                        <label for="startDate1">Tour Start Date</label>
+                        <input type="date" id="startDate1" value="" class="form-control startDate">
+                    </div>
+                    <input type="hidden" id="noOfDays" name="no_of_day" value="{{ tour.no_of_day }}" class="form-control">
+                    <div class="form-group">
+                        <label for="endDate">Tour End Date</label>
+                        <input type="date" id="endDate" disabled value="" class="form-control endDate">
+                    </div> 
+                    {% else %}
+                    <div class="valid_date_area">
+                        <div class="valid_date_area_one">
+                            <h5>Tour Start Date</h5>
+                            <input type="date" id="startDate" value="{{ tour.start_date|date:'Y-m-d' }}" class="form-control" re>
+
+                        </div>
+                        <div class="valid_date_area_one">
+                            <h5>Tour End Date</h5>
+                            <input type="date" id="endDate" value="{{ tour.end_date|date:'Y-m-d' }}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    {% endif %}
                     <div class="select_person_item">
                         <div class="select_person_left">
                             <h6>Adult</h6>
@@ -465,8 +520,9 @@
                     <input type="hidden" value="1" class="no_of_people_booking" name="no_of_people_booking">
                     <!-- Updated "form" attribute to match the form ID -->                
                     <button type="submit" 
-                    {% if message is not None %}disabled{% endif %}
+                    {% if message is None or "Sorry, tour is already in progress or finished" in message %}disabled{% endif %}
                     value="proceed_for_booking" form="systemForm" class="btn btn_theme btn_md w-100">Proceed to Booking</button>
+            
             </form>
         </div>
     </div>
@@ -489,12 +545,19 @@
                 updateCount();
             }
         });
-        
+
         incrementButton.addEventListener('click', () => {
-            if (count < {{ tour.get_available_group_size }}) {
-                count++;
-                updateCount();
-            }
+            {% if tour.get_available_group_size == None %}
+                if (count < 8) {
+                    count++;
+                    updateCount();
+                }
+            {% else %}
+                if (count < {{ tour.get_available_group_size }}) {
+                    count++;
+                    updateCount();
+                }
+            {% endif %}
         });
         
         function updateCount() {
@@ -506,6 +569,36 @@
             localStorage.setItem('no_of_people_booking', count); // Update
             localStorage.setItem('tour_id', {{ tour.id}}); // Update
         }
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Assuming you have input elements with the class names 'startDate' and 'endDate'
+    var startDateElements = document.getElementsByClassName('startDate');
+    var endDateElements = document.getElementsByClassName('endDate');
+
+    // Set the 'min' attribute for each element with the class name 'startDate'
+    for (var i = 0; i < startDateElements.length; i++) {
+        startDateElements[i].setAttribute('min', new Date().toISOString().split('T')[0]);
+    }
+
+    // When any start date changes, calculate the corresponding end date
+    for (var i = 0; i < startDateElements.length; i++) {
+        startDateElements[i].addEventListener('change', function() {
+            const startDate = new Date(this.value); // Get the selected start date
+            const noOfDays = parseInt(document.getElementById('noOfDays').value); // Get the number of days from the hidden input
+            if (!isNaN(noOfDays)) {
+                const endDate = new Date(startDate.getTime() + (noOfDays - 1) * 24 * 60 * 60 * 1000); // Calculate end date
+                // Set the calculated end date for all elements with the class name 'endDate'
+                for (var j = 0; j < endDateElements.length; j++) {
+                    endDateElements[j].value = endDate.toISOString().split('T')[0];
+                }
+            }
+        });
+    }
+});
+
+
+
     </script>
 </body>
 </html>

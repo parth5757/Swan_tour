@@ -437,3 +437,14 @@ class TourReviewCreateView(BaseView, CreateView):
     template_name = 'tour/tour_detail.html'
     form_class = TourReviewForm
     success_url = reverse_lazy('tour_user_list')
+
+
+    def form_valid(self, form):
+        form.instance.manager = self.request.user
+        tour = form.save()
+
+    def form_invalid(self, form):
+        print(form)
+        for error in form.errors:
+            print("==> error:", error)
+        return super().form_invalid(form)

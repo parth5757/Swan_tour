@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import UserView
 from app.views import ErrorView
-from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification
+from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification, CustomPasswordChangeView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -20,11 +20,18 @@ urlpatterns = [
     path('login/', UserView.MyLoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', UserView.RegisterUser.as_view(), name='register'),
+
+
     # forget password
     path('password-reset/', PasswordResetView.as_view(template_name='users/password_reset.html'),name='password-reset'),
     path('password-reset/done/', PasswordResetDoneView.as_view(template_name='users/reset_password_done.html'),name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'),name='password_reset_confirm'),
     path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),name='password_reset_complete'),
+    
+
+    path('change_password/', CustomPasswordChangeView.as_view(), name='change_password'),
+
+
     # path()
     path('profile/', Profile.as_view(), name='profile'),
     path('', UserView.Home.as_view(), name='home'),
@@ -46,4 +53,5 @@ urlpatterns = [
     path('city/', UserView.City.as_view(),name="city"),
     path('city/list/json', UserView.CityListJson.as_view(), name='city_list_json'),
     path('delete_city/<int:pk>', UserView.CityDeleteView.as_view(), name='city_delete'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT   )
