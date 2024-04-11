@@ -57,12 +57,9 @@ class HotelView():
         model =Hotel
         context_object_name = 'hotel'
         template_name = 'hotel/db_vendor_hotels.html'
-    
-        # add hotel search option
-        # def get_queryset(self):
-        #     search = self.request.GET.get('search', '')
-        #     hotel = Hotel.objects.filter(first_name_locations=search)
-        #     return hotel
+        slug_field = 'tour_string'
+        slug_field_kwargs = 'slug'
+
 
     class HotelDeleteView(BaseView, SuperUserView, DeleteView):
         '''Delete view of an Hotel'''

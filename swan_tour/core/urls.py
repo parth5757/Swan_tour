@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import UserView
 from app.views import ErrorView
-from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification, CustomPasswordChangeView
+from .views import UserView, About, Dashboard, Contact, Profile, ContactNotification, CustomPasswordChangeView, ChatView
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -53,5 +53,6 @@ urlpatterns = [
     path('city/', UserView.City.as_view(),name="city"),
     path('city/list/json', UserView.CityListJson.as_view(), name='city_list_json'),
     path('delete_city/<int:pk>', UserView.CityDeleteView.as_view(), name='city_delete'),
+    path('chat/', ChatView.as_view(), name='chat'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT   )

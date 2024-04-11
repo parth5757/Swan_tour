@@ -357,3 +357,7 @@ class CustomPasswordChangeView(PasswordChangeView):
     def form_invalid(self, form):
         messages.error(self.request, 'There was an error. Please try again.')
         return super().form_invalid(form)
+
+
+class ChatView(TemplateView):
+    template_name = 'common/chat.html'

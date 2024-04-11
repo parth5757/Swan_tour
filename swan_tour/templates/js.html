@@ -16,3 +16,22 @@
 <script src="{% static 'assets/js/video.js' %}"></script>
 
 
+
+<script>
+    // JavaScript for Chat Popup
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatPopup = document.getElementById('chat-popup');
+        const openChatBtn = document.getElementById('open-chat-btn');
+        const closeChatBtn = document.querySelector('.close-chat-popup');
+
+        // Open chat popup
+        openChatBtn.addEventListener('click', function() {
+            chatPopup.style.display = 'block';
+        });
+
+        // Close chat popup
+        closeChatBtn.addEventListener('click', function() {
+            chatPopup.style.display = 'none';
+        });
+    });
+</script>

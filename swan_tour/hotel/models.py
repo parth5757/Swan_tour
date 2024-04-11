@@ -7,6 +7,7 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 import uuid
+from autoslug import AutoSlugField
 # Create your models here.
 class Hotel(BaseModel):
     hotelname = models.CharField(max_length=50)
@@ -25,6 +26,8 @@ class Hotel(BaseModel):
     image_3 = models.ImageField(upload_to='image/hotel/')
     image_4 = models.ImageField(upload_to='image/hotel/')
     image_5 = models.ImageField(upload_to='image/hotel/')
+    hotel_slug = AutoSlugField(populate_from='hotelname', unique=True, null=True, default=None)
+    
 
     # hotel rating auto updated
     @classmethod
